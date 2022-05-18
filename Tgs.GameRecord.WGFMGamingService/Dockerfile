@@ -11,18 +11,18 @@ RUN --mount=type=secret,id=nuget,dst=/pat cp /pat ~/.nuget/NuGet/NuGet.Config
 RUN dotnet nuget remove source 'Microsoft Visual Studio Offline Packages' || true
 WORKDIR /src
 COPY ["NuGet.config", "."]
-COPY ["Tgs.GameRecord.VRGamingService/Tgs.GameRecord.VRGamingService.csproj", "Tgs.GameRecord.VRGamingService/"]
-COPY ["Tgs.GameRecord.VRGamingService.Core/Tgs.GameRecord.VRGamingService.Core.csproj", "Tgs.GameRecord.VRGamingService.Core/"]
-RUN dotnet restore "Tgs.GameRecord.VRGamingService/Tgs.GameRecord.VRGamingService.csproj"
+COPY ["Tgs.GameRecord.WGFMGamingService/Tgs.GameRecord.WGFMGamingService.csproj", "Tgs.GameRecord.WGFMGamingService/"]
+COPY ["Tgs.GameRecord.WGFMGamingService.Core/Tgs.GameRecord.WGFMGamingService.Core.csproj", "Tgs.GameRecord.WGFMGamingService.Core/"]
+RUN dotnet restore "Tgs.GameRecord.WGFMGamingService/Tgs.GameRecord.WGFMGamingService.csproj"
 COPY . .
-WORKDIR "/src/Tgs.GameRecord.VRGamingService"
-RUN dotnet build "Tgs.GameRecord.VRGamingService.csproj" -c $BuildConfiguration -o /app/build
+WORKDIR "/src/Tgs.GameRecord.WGFMGamingService"
+RUN dotnet build "Tgs.GameRecord.WGFMGamingService.csproj" -c $BuildConfiguration -o /app/build
 
 FROM build AS publish
 ARG BuildConfiguration
-RUN dotnet publish "Tgs.GameRecord.VRGamingService.csproj" -c $BuildConfiguration -o /app/publish
+RUN dotnet publish "Tgs.GameRecord.WGFMGamingService.csproj" -c $BuildConfiguration -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Tgs.GameRecord.VRGamingService.dll"]
+ENTRYPOINT ["dotnet", "Tgs.GameRecord.WGFMGamingService.dll"]
