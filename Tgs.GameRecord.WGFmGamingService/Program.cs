@@ -4,9 +4,9 @@ using OpenTelemetry.Exporter;
 using OpenTelemetry.Instrumentation.AspNetCore;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
+using Tgs.GameRecord.WGFmGamingService;
 using Tgs.MessageQueue.MongoDB.Configuration;
 using MongoMessageQueue = MongoDB.Messaging.MessageQueue;
-using Tgs.GameRecord.WGFmGamingService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -92,7 +92,7 @@ builder.Services
                         new Dictionary<string, object>());
                 };
             })
-            .AddHandler<VRGamingMessageHandler>("gp.gamerecord.wgfm", false);
+            .AddHandler<WGFmGamingMessageHandler>("gp.gamerecord.wgfm", false);
     })
     .AddMongoMessageQueue(config =>
     {

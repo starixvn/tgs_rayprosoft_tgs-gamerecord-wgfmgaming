@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
 using Tgs.GameProviders.Client;
 using Tgs.GameProviders.QueryServer.Client;
-using Tgs.GameRecordSchedules.Client;
 using Tgs.GameRecord.WGFmGamingService.Core;
+using Tgs.GameRecordSchedules.Client;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -32,6 +32,6 @@ public static class ServiceCollecitonExtensions
         .AddGameRecordSchedulesClient(gameRecordSchedulesClientOptions)
         .AddGameProvidersClient(gameProvidersClientOptions)
         .AddScoped<ISystemClock, SystemClock>()
-        .AddTransient<IWGFMGaming, WGFMGamingRepository>()
-        .Decorate<IWGFMGaming>((innerRepository, sp) => ActivatorUtilities.CreateInstance<WGFMGamingMemoryCacheRepository>(sp, innerRepository, TimeSpan.FromHours(1)));
+        .AddTransient<IWGFmGaming, WGFmGamingRepository>()
+        .Decorate<IWGFmGaming>((innerRepository, sp) => ActivatorUtilities.CreateInstance<WGFmGamingMemoryCacheRepository>(sp, innerRepository, TimeSpan.FromHours(1)));
 }

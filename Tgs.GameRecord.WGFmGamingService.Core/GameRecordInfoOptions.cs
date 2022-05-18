@@ -4,7 +4,7 @@
     {
         public string GameProviderCode { get; set; } = default!;
         public string GameProviderConfiguration { get; set; } = default!;
-        public decimal IntervalMinuteMax { get; set; } = 60;
-        public decimal IntervalMinute { get; set; } = 20;
+        public int IntervalMinuteMax { get; set; } = 60;
+        public int IntervalMinute { get; set; } = 20;
     }
 }

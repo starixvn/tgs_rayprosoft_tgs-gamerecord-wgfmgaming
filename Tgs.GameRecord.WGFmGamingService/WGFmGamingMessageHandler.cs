@@ -1,19 +1,18 @@
 ﻿using System.Text;
 using System.Text.Json;
+using Tgs.GameRecord.WGFmGamingService.Core.JobWorkerServices;
 using Tgs.MessageQueue;
 using Tgs.ServiceUtility;
-using Tgs.GameRecord.WGFmGamingService;
-using Tgs.GameRecord.WGFmGamingService.Core.JobWorkerServices;
 
 namespace Tgs.GameRecord.WGFmGamingService
 {
-    internal class VRGamingMessageHandler : IMessageHandler
+    internal class WGFmGamingMessageHandler : IMessageHandler
     {
-        private readonly ILogger<VRGamingMessageHandler> _logger;
+        private readonly ILogger<WGFmGamingMessageHandler> _logger;
         private readonly ICommandService<JobWorkerCommand> _service;
 
-        public VRGamingMessageHandler(
-            ILogger<VRGamingMessageHandler> logger,
+        public WGFmGamingMessageHandler(
+            ILogger<WGFmGamingMessageHandler> logger,
             ICommandService<JobWorkerCommand> service
             )
         {
@@ -24,7 +23,7 @@ namespace Tgs.GameRecord.WGFmGamingService
         public ValueTask HandleAsync(ReadOnlyMemory<byte> data, CancellationToken cancellationToken = default)
         {
             var json = Encoding.UTF8.GetString(data.Span);
-            var messageModel = JsonSerializer.Deserialize<VRGamingMessageModel>(json);
+            var messageModel = JsonSerializer.Deserialize<WGFmGamingMessageModel>(json);
 
             if (messageModel == null)
             {

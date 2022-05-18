@@ -1,9 +1,8 @@
-﻿using Tgs.GameProviders.Domains.SettingConfiguration;
-using Tgs.GameProviders.QueryServer.Models;
+﻿using Tgs.GameProviders.QueryServer.Models;
 
 namespace Tgs.GameRecord.WGFmGamingService.Core
 {
-    public interface IWGFMGaming
+    public interface IWGFmGaming
     {
         ValueTask<Guid?> BrandGetGameProviderConfigurationIdAsync(Guid brandId, Guid gameProviderId);
 

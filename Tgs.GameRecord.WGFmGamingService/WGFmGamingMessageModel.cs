@@ -1,6 +1,6 @@
 ﻿namespace Tgs.GameRecord.WGFmGamingService
 {
-    public record VRGamingMessageModel
+    public record WGFmGamingMessageModel
     {
         public string GameProviderCode { get; init; } = default!;
         public DateTimeOffset SendDateTime { get; init; }

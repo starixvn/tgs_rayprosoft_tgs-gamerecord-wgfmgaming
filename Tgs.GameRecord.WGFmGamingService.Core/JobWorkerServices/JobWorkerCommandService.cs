@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
-using Tgs.ServiceUtility;
 using Tgs.GameRecord.WGFmGamingService.Core.ApplicationServices;
-using Tgs.GameRecord.WGFmGamingService.Core.JobWorkerServices;
+using Tgs.ServiceUtility;
 
 namespace Tgs.GameRecord.WGFmGamingService.Core.JobWorkerServices
 {
@@ -10,11 +9,11 @@ namespace Tgs.GameRecord.WGFmGamingService.Core.JobWorkerServices
         private readonly IGameRecordSchedule _gameRecordScheduleService;
         private readonly IGetService<GameRecordQuery, GameRecordResult> _getService;
         private readonly ILogger<JobWorkerCommandService> _logger;
-        private readonly IWGFMGaming _service;
+        private readonly IWGFmGaming _service;
         private readonly ISystemClock _systemClock;
 
         public JobWorkerCommandService(
-            IWGFMGaming service,
+            IWGFmGaming service,
             IGameRecordSchedule gameRecordScheduleService,
             ISystemClock systemClock,
             ILogger<JobWorkerCommandService> logger,
@@ -29,9 +28,7 @@ namespace Tgs.GameRecord.WGFmGamingService.Core.JobWorkerServices
 
         public async ValueTask ExecuteAsync(JobWorkerCommand command, CancellationToken cancellationToken = default)
         {
-
             var gameProviderId = await _service.GetGameProviderIdAsync().ConfigureAwait(false);
-
 
             try
             {

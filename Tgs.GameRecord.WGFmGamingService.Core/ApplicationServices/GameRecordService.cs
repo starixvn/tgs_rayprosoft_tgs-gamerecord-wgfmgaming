@@ -4,7 +4,6 @@ using MongoDB.Bson;
 using Tgs.GameProviders.Client;
 using Tgs.MessageQueue;
 using Tgs.ServiceUtility;
-using Tgs.GameRecord.WGFmGamingService.Core.ApplicationServices;
 
 namespace Tgs.GameRecord.WGFmGamingService.Core.ApplicationServices
 {
@@ -14,7 +13,7 @@ namespace Tgs.GameRecord.WGFmGamingService.Core.ApplicationServices
         private readonly GameRecordInfoOptions _gameRecordInfoOptions;
         private readonly ILogger<GameRecordService> _logger;
         private readonly IMessageSender _messageSender;
-        private readonly IWGFMGaming _service;
+        private readonly IWGFmGaming _service;
         private readonly string _subject;
 
         public GameRecordService(
@@ -22,7 +21,7 @@ namespace Tgs.GameRecord.WGFmGamingService.Core.ApplicationServices
             ILogger<GameRecordService> logger,
             IGameRecordListClient client,
             IMessageSender messageSender,
-            IWGFMGaming service)
+            IWGFmGaming service)
         {
             _gameRecordInfoOptions = options.Value;
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
