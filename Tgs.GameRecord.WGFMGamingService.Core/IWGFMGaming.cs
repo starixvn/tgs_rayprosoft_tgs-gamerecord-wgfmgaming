@@ -1,7 +1,7 @@
 ﻿using Tgs.GameProviders.Domains.SettingConfiguration;
 using Tgs.GameProviders.QueryServer.Models;
 
-namespace Tgs.GameRecord.WGFMGamingService.Core
+namespace Tgs.GameRecord.WGFmGamingService.Core
 {
     public interface IWGFMGaming
     {

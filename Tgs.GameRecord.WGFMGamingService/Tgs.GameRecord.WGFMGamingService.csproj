@@ -30,7 +30,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Tgs.GameRecord.WGFMGamingService.Core\Tgs.GameRecord.WGFMGamingService.Core.csproj" />
+	  <ProjectReference Include="..\Tgs.GameRecord.WGFmGamingService.Core\Tgs.GameRecord.WGFmGamingService.Core.csproj" />
 	</ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-﻿namespace Tgs.GameRecord.WGFMGamingService.ViewModels
+﻿namespace Tgs.GameRecord.WGFmGamingService.ViewModels
 {
     public record GameRecordResultViewModel
     {

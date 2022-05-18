@@ -1,4 +1,4 @@
-﻿namespace Tgs.GameRecord.WGFMGamingService
+﻿namespace Tgs.GameRecord.WGFmGamingService
 {
     public record VRGamingMessageModel
     {

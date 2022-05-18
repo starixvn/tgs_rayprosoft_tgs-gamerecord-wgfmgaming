@@ -1,4 +1,4 @@
-﻿namespace Tgs.GameRecord.WGFMGamingService.Core.ApplicationServices
+﻿namespace Tgs.GameRecord.WGFmGamingService.Core.ApplicationServices
 {
     public record GameRecordResult
     {

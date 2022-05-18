@@ -1,4 +1,4 @@
-﻿namespace Tgs.GameRecord.WGFMGamingService.Core.JobWorkerServices
+﻿namespace Tgs.GameRecord.WGFmGamingService.Core.JobWorkerServices
 {
     public record JobWorkerCommand
     {

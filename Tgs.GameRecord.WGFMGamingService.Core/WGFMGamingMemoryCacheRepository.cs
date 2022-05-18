@@ -2,8 +2,9 @@
 using Microsoft.Extensions.Options;
 using Tgs.GameProviders.Domains.SettingConfiguration;
 using Tgs.GameProviders.QueryServer.Models;
+using Tgs.GameRecord.WGFmGamingService.Core;
 
-namespace Tgs.GameRecord.WGFMGamingService.Core
+namespace Tgs.GameRecord.WGFmGamingService.Core
 {
     internal class WGFMGamingMemoryCacheRepository : IWGFMGaming
     {

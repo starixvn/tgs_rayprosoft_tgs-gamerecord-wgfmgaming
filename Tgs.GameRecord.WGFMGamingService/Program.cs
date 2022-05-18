@@ -6,7 +6,7 @@ using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Tgs.MessageQueue.MongoDB.Configuration;
 using MongoMessageQueue = MongoDB.Messaging.MessageQueue;
-using Tgs.GameRecord.WGFMGamingService;
+using Tgs.GameRecord.WGFmGamingService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -79,20 +79,20 @@ builder.Services
                 options.OnSetupQueueAndExchange = channel =>
                 {
                     _ = channel.QueueDeclare(
-                        queue: "gp.gamerecord.vr",
+                        queue: "gp.gamerecord.wgfm",
                         durable: true,
                         exclusive: false,
                         autoDelete: false,
                         arguments: null);
 
                     channel.QueueBind(
-                        "gp.gamerecord.vr",
+                        "gp.gamerecord.wgfm",
                         "amq.direct",
-                        $"tgs.gp.gamerecord.vr",
+                        $"tgs.gp.gamerecord.wgfm",
                         new Dictionary<string, object>());
                 };
             })
-            .AddHandler<VRGamingMessageHandler>("gp.gamerecord.vr", false);
+            .AddHandler<VRGamingMessageHandler>("gp.gamerecord.wgfm", false);
     })
     .AddMongoMessageQueue(config =>
     {
@@ -106,7 +106,7 @@ builder.Services
             });
     })
     .ClearAllExchanges()
-    .AddMongoGlobPatternExchange("tgs.gp.gamerecord.database.round.vr", "gp.gamerecord.database", "tgs.gp.gamerecord.database.round.vr");
+    .AddMongoGlobPatternExchange("tgs.gp.gamerecord.database.round.wgfm", "gp.gamerecord.database", "tgs.gp.gamerecord.database.round.wgfm");
 
 builder.Services
      .AddSingleton<IConfigureOptions<OtlpExporterOptions>>(

@@ -1,8 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
 using Tgs.ServiceUtility;
-using Tgs.GameRecord.WGFMGamingService.Core.ApplicationServices;
+using Tgs.GameRecord.WGFmGamingService.Core.ApplicationServices;
+using Tgs.GameRecord.WGFmGamingService.Core.JobWorkerServices;
 
-namespace Tgs.GameRecord.WGFMGamingService.Core.JobWorkerServices
+namespace Tgs.GameRecord.WGFmGamingService.Core.JobWorkerServices
 {
     internal class JobWorkerCommandService : ICommandService<JobWorkerCommand>
     {

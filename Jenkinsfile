@@ -63,7 +63,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'dotnet build "Tgs.GameRecord.WGFMGamingService/Tgs.GameRecord.WGFMGamingService.csproj" -c $BuildConfiguration -t:ContainerBuild -p:DockerfileTag="$ImageName:${TAG}" --no-restore '
+                sh 'dotnet build "Tgs.GameRecord.WGFmGamingService/Tgs.GameRecord.WGFmGamingService.csproj" -c $BuildConfiguration -t:ContainerBuild -p:DockerfileTag="$ImageName:${TAG}" --no-restore '
             }
         }
 

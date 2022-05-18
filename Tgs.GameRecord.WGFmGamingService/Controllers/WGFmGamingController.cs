@@ -1,13 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Tgs.ServiceUtility;
-using Tgs.GameRecord.WGFMGamingService.ViewModels;
-using Tgs.GameRecord.WGFMGamingService.Core.ApplicationServices;
+using Tgs.GameRecord.WGFmGamingService.ViewModels;
+using Tgs.GameRecord.WGFmGamingService.Core.ApplicationServices;
 
-namespace Tgs.GameRecord.WGFMGamingService.Controllers
+namespace Tgs.GameRecord.WGFmGamingService.Controllers
 {
     [ApiController]
-    [Route("VR")]
-    public class VRGamingController : ControllerBase
+    [Route("WGFM")]
+    public class WGFmGamingController : ControllerBase
     {
         [HttpPost]
         public async ValueTask<GameRecordResultViewModel> GameRecordAsync(

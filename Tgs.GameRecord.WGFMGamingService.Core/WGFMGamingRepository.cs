@@ -2,9 +2,9 @@
 using Tgs.GameProviders.Domains.SettingConfiguration;
 using Tgs.GameProviders.QueryServer.Client;
 using Tgs.GameProviders.QueryServer.Models;
-using Tgs.GameRecord.WGFMGamingService.Core;
+using Tgs.GameRecord.WGFmGamingService.Core;
 
-namespace Tgs.GameRecord.WGFMGamingService.Core
+namespace Tgs.GameRecord.WGFmGamingService.Core
 {
     internal class WGFMGamingRepository : IWGFMGaming
     {

@@ -2,9 +2,10 @@
 using System.Text.Json;
 using Tgs.MessageQueue;
 using Tgs.ServiceUtility;
-using Tgs.GameRecord.WGFMGamingService.Core.JobWorkerServices;
+using Tgs.GameRecord.WGFmGamingService;
+using Tgs.GameRecord.WGFmGamingService.Core.JobWorkerServices;
 
-namespace Tgs.GameRecord.WGFMGamingService
+namespace Tgs.GameRecord.WGFmGamingService
 {
     internal class VRGamingMessageHandler : IMessageHandler
     {

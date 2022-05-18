@@ -1,6 +1,6 @@
 ﻿using Tgs.GameProviders.Client;
 
-namespace Tgs.GameRecord.WGFMGamingService.Core
+namespace Tgs.GameRecord.WGFmGamingService.Core
 {
     public record GameRoundMessageRequest
     {

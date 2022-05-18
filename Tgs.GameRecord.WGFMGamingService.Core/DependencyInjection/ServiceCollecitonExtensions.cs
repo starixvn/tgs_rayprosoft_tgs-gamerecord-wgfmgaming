@@ -2,7 +2,7 @@
 using Tgs.GameProviders.Client;
 using Tgs.GameProviders.QueryServer.Client;
 using Tgs.GameRecordSchedules.Client;
-using Tgs.GameRecord.WGFMGamingService.Core;
+using Tgs.GameRecord.WGFmGamingService.Core;
 
 namespace Microsoft.Extensions.DependencyInjection;
 

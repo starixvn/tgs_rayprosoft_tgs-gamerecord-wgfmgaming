@@ -4,9 +4,9 @@ using MongoDB.Bson;
 using Tgs.GameProviders.Client;
 using Tgs.MessageQueue;
 using Tgs.ServiceUtility;
-using Tgs.GameRecord.WGFMGamingService.Core.ApplicationServices;
+using Tgs.GameRecord.WGFmGamingService.Core.ApplicationServices;
 
-namespace Tgs.GameRecord.WGFMGamingService.Core.ApplicationServices
+namespace Tgs.GameRecord.WGFmGamingService.Core.ApplicationServices
 {
     internal class GameRecordService : IGetService<GameRecordQuery, GameRecordResult>
     {

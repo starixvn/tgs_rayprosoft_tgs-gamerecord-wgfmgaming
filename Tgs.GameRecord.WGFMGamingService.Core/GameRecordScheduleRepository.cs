@@ -2,9 +2,9 @@
 using Microsoft.Extensions.Options;
 using Tgs.GameRecordSchedules.Client;
 using Tgs.GameRecordSchedules.Protos;
-using Tgs.GameRecord.WGFMGamingService.Core;
+using Tgs.GameRecord.WGFmGamingService.Core;
 
-namespace Tgs.GameRecord.WGFMGamingService.Core
+namespace Tgs.GameRecord.WGFmGamingService.Core
 {
     internal class GameRecordScheduleRepository : IGameRecordSchedule
     {
