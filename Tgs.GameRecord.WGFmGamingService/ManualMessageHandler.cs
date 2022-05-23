@@ -36,7 +36,6 @@ namespace Tgs.GameRecord.WGFmGamingService
             };
 
             return Encoding.UTF8.GetBytes(JsonSerializer.Serialize(response));
-
         }
     }
 }
