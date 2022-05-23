@@ -92,7 +92,7 @@ builder.Services
                         new Dictionary<string, object>());
                 };
             })
-            .AddHandler<WGFmGamingMessageHandler>("gp.gamerecord.wgfm", false);
+            .AddHandler<ScheduleMessageHandler>("gp.gamerecord.wgfm", false);
     })
     .AddMongoMessageQueue(config =>
     {
@@ -105,6 +105,16 @@ builder.Services
                 ConnectionString = sp.GetRequiredService<IConfiguration>().GetConnectionString("MongoMessaging")
             });
     })
+     .AddNatsMessageQueue(natsConfig =>
+     {
+         _ = natsConfig
+         .ConfigQueueOptions((options, sp) =>
+         {
+             var configuration = sp.GetRequiredService<IConfiguration>();
+             options.Url = configuration.GetConnectionString("Nats");
+         })
+         .AddProcessor<ManualMessageHandler>("gp.gamerecord.manual.wgfm", "gp.gamerecord.manual");
+     })
     .ClearAllExchanges()
     .AddMongoGlobPatternExchange("tgs.gp.gamerecord.database.round.wgfm", "gp.gamerecord.database", "tgs.gp.gamerecord.database.round.wgfm");
 
