@@ -51,16 +51,16 @@ namespace Tgs.GameRecord.WGFmGamingService.Core.ApplicationServices
                 };
             }
 
-            var LastGameRecorTime = responseUnSettle.LastGameRecordTime;
-            if (LastGameRecorTime == null)
+            var LastGameRecordTime = responseUnSettle.LastGameRecordTime;
+            if (LastGameRecordTime == null)
             {
-                LastGameRecorTime = responseSettle.LastGameRecordTime;
+                LastGameRecordTime = responseSettle.LastGameRecordTime;
             }
             else
             {
                 if (responseSettle.LastGameRecordTime != null)
                 {
-                    LastGameRecorTime = (LastGameRecorTime < responseSettle.LastGameRecordTime) ? responseSettle.LastGameRecordTime : LastGameRecorTime;
+                    LastGameRecordTime = (LastGameRecordTime < responseSettle.LastGameRecordTime) ? responseSettle.LastGameRecordTime : LastGameRecordTime;
                 }
             }
 
@@ -70,7 +70,7 @@ namespace Tgs.GameRecord.WGFmGamingService.Core.ApplicationServices
                 Count = responseUnSettle.Count + responseSettle.Count,
                 SuccessCount = responseUnSettle.SuccessCount + responseSettle.SuccessCount,
                 FailCount = responseUnSettle.FailCount + responseSettle.FailCount,
-                LastGameRecorTime = LastGameRecorTime
+                LastGameRecordTime = LastGameRecordTime
             };
         }
 
