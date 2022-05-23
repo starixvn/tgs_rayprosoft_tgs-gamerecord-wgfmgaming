@@ -92,7 +92,7 @@ builder.Services
                         new Dictionary<string, object>());
                 };
             })
-            .AddHandler<WGFmGamingMessageHandler>("gp.gamerecord.wgfm", false);
+            .AddHandler<ScheduleMessageHandler>("gp.gamerecord.wgfm", false);
     })
     .AddMongoMessageQueue(config =>
     {
