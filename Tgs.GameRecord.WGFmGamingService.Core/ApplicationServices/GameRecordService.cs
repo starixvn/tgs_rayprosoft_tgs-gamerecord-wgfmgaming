@@ -33,7 +33,7 @@ namespace Tgs.GameRecord.WGFmGamingService.Core.ApplicationServices
 
         public async ValueTask<GameRecordResult> GetAsync(GameRecordQuery query, CancellationToken cancellationToken = default)
         {
-            (bool Success, int Count, int SuccessCount, int FailCount, DateTimeOffset? LastGameRecordTime) responseUnSettle = await UnSettleAsync(query, cancellationToken).ConfigureAwait(false);
+            (bool Success, int Count, int SuccessCount, int FailureCount, DateTimeOffset? LastGameRecordTime) responseUnSettle = await UnSettleAsync(query, cancellationToken).ConfigureAwait(false);
             if (!responseUnSettle.Success)
             {
                 return new()
@@ -42,7 +42,7 @@ namespace Tgs.GameRecord.WGFmGamingService.Core.ApplicationServices
                 };
             }
 
-            (bool Success, int Count, int SuccessCount, int FailCount, DateTimeOffset? LastGameRecordTime) responseSettle = await SettleAsync(query, cancellationToken).ConfigureAwait(false);
+            (bool Success, int Count, int SuccessCount, int FailureCount, DateTimeOffset? LastGameRecordTime) responseSettle = await SettleAsync(query, cancellationToken).ConfigureAwait(false);
             if (!responseSettle.Success)
             {
                 return new()
@@ -69,16 +69,16 @@ namespace Tgs.GameRecord.WGFmGamingService.Core.ApplicationServices
                 Success = true,
                 Count = responseUnSettle.Count + responseSettle.Count,
                 SuccessCount = responseUnSettle.SuccessCount + responseSettle.SuccessCount,
-                FailCount = responseUnSettle.FailCount + responseSettle.FailCount,
+                FailureCount = responseUnSettle.FailureCount + responseSettle.FailureCount,
                 LastGameRecordTime = LastGameRecordTime
             };
         }
 
-        private async ValueTask<(bool Success, int Count, int SuccessCount, int FailCount, DateTimeOffset? LastGameRecordTime)> ExecuteRecordAsync(GameRecordModle[] datas, CancellationToken cancellationToken = default)
+        private async ValueTask<(bool Success, int Count, int SuccessCount, int FailureCount, DateTimeOffset? LastGameRecordTime)> ExecuteRecordAsync(GameRecordModle[] datas, CancellationToken cancellationToken = default)
         {
             var count = 0;
             var successCount = 0;
-            var failCount = 0;
+            var failureCount = 0;
             var lastGameRecordTime = default(DateTimeOffset?);
 
             foreach (var data in datas)
@@ -111,7 +111,7 @@ namespace Tgs.GameRecord.WGFmGamingService.Core.ApplicationServices
                 }
                 else
                 {
-                    failCount++;
+                    failureCount++;
                 }
 
                 var messageRequest = new GameRoundMessageRequest()
@@ -150,10 +150,10 @@ namespace Tgs.GameRecord.WGFmGamingService.Core.ApplicationServices
                 lastGameRecordTime = data.ExternalClosedOn.HasValue ? data.ExternalClosedOn : data.ExternalCreatedOn;
             }
 
-            return (true, count, successCount, failCount, lastGameRecordTime);
+            return (true, count, successCount, failureCount, lastGameRecordTime);
         }
 
-        private async ValueTask<(bool Success, int Count, int SuccessCount, int FailCount, DateTimeOffset? LastGameRecordTime)> SettleAsync(GameRecordQuery source, CancellationToken cancellationToken = default)
+        private async ValueTask<(bool Success, int Count, int SuccessCount, int FailureCount, DateTimeOffset? LastGameRecordTime)> SettleAsync(GameRecordQuery source, CancellationToken cancellationToken = default)
         {
             var response = await _client.WGSportsGameRecordListAsync(
                 true,
@@ -167,7 +167,7 @@ namespace Tgs.GameRecord.WGFmGamingService.Core.ApplicationServices
                 : await ExecuteRecordAsync(response?.Datas!, cancellationToken).ConfigureAwait(false);
         }
 
-        private async ValueTask<(bool Success, int Count, int SuccessCount, int FailCount, DateTimeOffset? LastGameRecordTime)> UnSettleAsync(GameRecordQuery source, CancellationToken cancellationToken = default)
+        private async ValueTask<(bool Success, int Count, int SuccessCount, int FailureCount, DateTimeOffset? LastGameRecordTime)> UnSettleAsync(GameRecordQuery source, CancellationToken cancellationToken = default)
         {
             var response = await _client.WGSportsGameRecordListAsync(
                 false,
