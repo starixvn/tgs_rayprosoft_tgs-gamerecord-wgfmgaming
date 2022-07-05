@@ -74,7 +74,7 @@ namespace Tgs.GameRecord.WGFmGamingService.Core.ApplicationServices
             };
         }
 
-        private async ValueTask<(bool Success, int Count, int SuccessCount, int FailureCount, DateTimeOffset? LastGameRecordTime)> ExecuteRecordAsync(GameRecordModle[] datas, CancellationToken cancellationToken = default)
+        private async ValueTask<(bool Success, int Count, int SuccessCount, int FailureCount, DateTimeOffset? LastGameRecordTime)> ExecuteRecordAsync(IEnumerable<GameRecordModle> datas, CancellationToken cancellationToken = default)
         {
             var count = 0;
             var successCount = 0;
@@ -156,30 +156,41 @@ namespace Tgs.GameRecord.WGFmGamingService.Core.ApplicationServices
         private async ValueTask<(bool Success, int Count, int SuccessCount, int FailureCount, DateTimeOffset? LastGameRecordTime)> SettleAsync(GameRecordQuery source, CancellationToken cancellationToken = default)
         {
             var response = await _client.WGSportsGameRecordListAsync(
-                true,
-                source.StartTime,
-                source.EndTime).ConfigureAwait(false);
+                    isSettlement: true,
+                    startTime: source.StartTime,
+                    endTime: source.EndTime,
+                    cancellationToken: cancellationToken).ConfigureAwait(false);
 
-            return response == null || !response.Success
-                ? (false, 0, 0, 0, null)
-                : response.Success && response?.Datas == null
-                ? (true, 0, 0, 0, null)
-                : await ExecuteRecordAsync(response?.Datas!, cancellationToken).ConfigureAwait(false);
+            if (response == null || !response.Success)
+            {
+                return (false, 0, 0, 0, null);
+            }
+
+            var datas = response.Datas ?? Enumerable.Empty<GameRecordModle>();
+
+            return !datas.Any() ?
+                (true, 0, 0, 0, null)
+                : await ExecuteRecordAsync(datas, cancellationToken).ConfigureAwait(false);
         }
 
         private async ValueTask<(bool Success, int Count, int SuccessCount, int FailureCount, DateTimeOffset? LastGameRecordTime)> UnSettleAsync(GameRecordQuery source, CancellationToken cancellationToken = default)
         {
             var response = await _client.WGSportsGameRecordListAsync(
-                false,
-                source.StartTime,
-                source.EndTime
-                ).ConfigureAwait(false);
+                    isSettlement: false,
+                    startTime: source.StartTime,
+                    endTime: source.EndTime,
+                    cancellationToken: cancellationToken).ConfigureAwait(false);
 
-            return response == null || !response.Success
-                ? (false, 0, 0, 0, null)
-                : response.Success && response?.Datas == null
-                ? (true, 0, 0, 0, null)
-                : await ExecuteRecordAsync(response?.Datas!, cancellationToken).ConfigureAwait(false);
+            if (response == null || !response.Success)
+            {
+                return (false, 0, 0, 0, null);
+            }
+
+            var datas = response.Datas ?? Enumerable.Empty<GameRecordModle>();
+
+            return !datas.Any() ?
+                (true, 0, 0, 0, null)
+                : await ExecuteRecordAsync(datas, cancellationToken).ConfigureAwait(false);
         }
     }
 }
