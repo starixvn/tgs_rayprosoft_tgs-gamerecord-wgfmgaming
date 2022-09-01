@@ -18,6 +18,7 @@ public static class ServiceCollectionExtensions
             .Configure(redisDBconfigure)
             .Services
             .AddSingleton<RedisConnectionManager>()
+            .AddMemoryCache()
             .AddGameRecordCore(
                 gameRecordInfoOptions,
                 gameProvidersQueryServerClientOptions,

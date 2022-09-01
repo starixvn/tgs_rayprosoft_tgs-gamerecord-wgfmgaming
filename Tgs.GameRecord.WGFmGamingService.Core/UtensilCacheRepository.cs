@@ -14,9 +14,10 @@ internal class UtensilCacheRepository : IUtensil
     public UtensilCacheRepository(
         IOptions<GameRecordInfoOptions> options,
         IUtensil utensil,
-        IMemoryCache memoryCache)
+        IMemoryCache memoryCache,
+        TimeSpan absoluteExpirationRelativeToNow)
     {
-        _absoluteExpirationRelativeToNow = TimeSpan.FromHours(1);
+        _absoluteExpirationRelativeToNow = absoluteExpirationRelativeToNow;
         _utensil = utensil ?? throw new ArgumentNullException(nameof(utensil));
         _gameRecordInfo = options.Value;
         _memoryCache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
