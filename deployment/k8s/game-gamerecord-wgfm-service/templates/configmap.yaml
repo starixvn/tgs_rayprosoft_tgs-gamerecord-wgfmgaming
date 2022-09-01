@@ -7,15 +7,15 @@ data:
   appsettings.json: |
     {
       "GameRecord": {
-        "GameRecordSchedulesBaseUrl": "http://game-gamerecordschedules",
         "GameProvidersQueryServerBaseUrl": "http://game-gameprovider-queryserver",
-        "GameProvidersBaseUrl": "http://game-gameproviders"
+        "GameInterfaceWGFmGamingBaseUrl": "http://game-gameinterface-wgfm-service:9090"
       },
       "GameRecordInfo": {
         "GameProviderCode": "WGFM",
         "GameProviderConfiguration": "WGFMConfiguration",
-        "IntervalMinuteMax": 1440,
-        "IntervalMinute": 10
+        "MinimumIntervalMinute": 1,
+        "IntervalMinute": 3,
+        "LockMinute": 1.5
       }
     }
   monitor.settings.json: |

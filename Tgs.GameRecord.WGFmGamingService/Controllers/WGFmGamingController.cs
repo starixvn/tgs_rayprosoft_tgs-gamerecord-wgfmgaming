@@ -1,33 +1,25 @@
 using Microsoft.AspNetCore.Mvc;
-using Tgs.GameRecord.WGFmGamingService.Core.ApplicationServices;
+using Tgs.GameRecord.WGFmGamingService.Core.WorkerServices;
 using Tgs.GameRecord.WGFmGamingService.ViewModels;
 using Tgs.ServiceUtility;
 
-namespace Tgs.GameRecord.WGFmGamingService.Controllers
-{
-    [ApiController]
-    [Route("WGFM")]
-    public class WGFmGamingController : ControllerBase
-    {
-        [HttpPost]
-        public async ValueTask<GameRecordResultViewModel> GameRecordAsync(
-            [FromServices] IGetService<GameRecordQuery, GameRecordResult> service,
-            GameRecordQueryViewModel model)
-        {
-            var result = await service.GetAsync(new GameRecordQuery()
-            {
-                StartTime = model.StartTime,
-                EndTime = model.EndTime
-            }).ConfigureAwait(false);
+namespace Tgs.GameRecord.WGFmGamingService.Controllers;
 
-            return new GameRecordResultViewModel()
-            {
-                Success = result.Success,
-                LastGameRecordTime = result.LastGameRecordTime,
-                SuccessCount = result.SuccessCount,
-                FailureCount = result.FailureCount,
-                Count = result.Count,
-            };
-        }
-    }
+[ApiController]
+[Route("WGFM")]
+public class WGFmGamingController : ControllerBase
+{
+    [HttpPost]
+    public ValueTask GameRecordAsync(
+        [FromServices] ICommandService<SettleWorkerCommand> service,
+        GameRecordQueryViewModel source)
+        => service
+            .ExecuteAsync(
+            new SettleWorkerCommand(
+                    source.ApiUrl,
+                    source.PartnerCode,
+                    source.PartnerKey,
+                    source.PartnerIV,
+                    source.StartTime,
+                    source.EndTime));
 }
