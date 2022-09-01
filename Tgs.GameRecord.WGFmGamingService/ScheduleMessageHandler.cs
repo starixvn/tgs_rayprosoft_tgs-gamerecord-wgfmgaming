@@ -1,44 +1,38 @@
 ﻿using System.Text;
 using System.Text.Json;
-using Tgs.GameRecord.WGFmGamingService.Core.JobWorkerServices;
+using Tgs.GameRecord.WGFmGamingService.Core.DispatchServices;
 using Tgs.MessageQueue;
 using Tgs.ServiceUtility;
 
-namespace Tgs.GameRecord.WGFmGamingService
+namespace Tgs.GameRecord.WGFmGamingService;
+
+internal class ScheduleMessageHandler : IMessageHandler
 {
-    internal class ScheduleMessageHandler : IMessageHandler
+    private readonly ILogger<ScheduleMessageHandler> _logger;
+    private readonly ICommandService<ScheduleDispatchCommand> _service;
+
+    public ScheduleMessageHandler(
+        ILogger<ScheduleMessageHandler> logger,
+        ICommandService<ScheduleDispatchCommand> service
+        )
     {
-        private readonly ILogger<ScheduleMessageHandler> _logger;
-        private readonly ICommandService<JobWorkerCommand> _service;
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _service = service ?? throw new ArgumentNullException(nameof(service));
+    }
 
-        public ScheduleMessageHandler(
-            ILogger<ScheduleMessageHandler> logger,
-            ICommandService<JobWorkerCommand> service
-            )
+    public ValueTask HandleAsync(ReadOnlyMemory<byte> data, CancellationToken cancellationToken = default)
+    {
+        var json = Encoding.UTF8.GetString(data.Span);
+        var messageModel = JsonSerializer.Deserialize<ScheduleMessageModel>(json);
+
+        if (messageModel == null)
         {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _service = service ?? throw new ArgumentNullException(nameof(service));
+            _logger.LogError("Information Received:{LogInfo}", messageModel);
+            return ValueTask.CompletedTask;
         }
 
-        public ValueTask HandleAsync(ReadOnlyMemory<byte> data, CancellationToken cancellationToken = default)
-        {
-            var json = Encoding.UTF8.GetString(data.Span);
-            var messageModel = JsonSerializer.Deserialize<ScheduleMessageModel>(json);
+        _logger.LogInformation("Information Received:{LogInfo}", messageModel);
 
-            if (messageModel == null)
-            {
-                _logger.LogError("Information Received:{LogInfo}", messageModel);
-                return ValueTask.CompletedTask;
-            }
-
-            _logger.LogInformation("Information Received:{LogInfo}", messageModel);
-
-            return _service.ExecuteAsync(new JobWorkerCommand()
-            {
-                GameProviderCode = messageModel.GameProviderCode,
-                SendOn = messageModel.SendDateTime,
-                ReceiveOn = DateTimeOffset.UtcNow
-            }, cancellationToken);
-        }
+        return _service.ExecuteAsync(new ScheduleDispatchCommand(), cancellationToken);
     }
 }

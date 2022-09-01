@@ -1,9 +1,19 @@
-﻿namespace Tgs.GameRecord.WGFmGamingService.ViewModels
-{
-    public record GameRecordQueryViewModel
-    {
-        public DateTimeOffset StartTime { get; init; } = default!;
+﻿using System.ComponentModel.DataAnnotations;
 
-        public DateTimeOffset EndTime { get; init; } = default!;
-    }
+namespace Tgs.GameRecord.WGFmGamingService.ViewModels;
+
+public record GameRecordQueryViewModel
+{
+    [Required]
+    public Uri ApiUrl { get; init; } = default!;
+    [Required]
+    public string PartnerCode { get; init; } = default!;
+    [Required]
+    public string PartnerKey { get; init; } = default!;
+    [Required]
+    public string PartnerIV { get; init; } = default!;
+    [Required]
+    public DateTimeOffset StartTime { get; init; }
+    [Required]
+    public DateTimeOffset EndTime { get; init; }
 }
