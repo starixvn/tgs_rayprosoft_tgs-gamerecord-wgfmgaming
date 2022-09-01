@@ -2,37 +2,38 @@
 using Tgs.GameProviders.QueryServer.Client;
 using Tgs.GameProviders.QueryServer.Models;
 
-namespace Tgs.GameRecord.WGFmGamingService.Core
+namespace Tgs.GameRecord.WGFmGamingService.Core;
+
+internal class UtensilRepository : IUtensil
 {
-    internal class UtensilRepository : IUtensil
+    private readonly IGameProvidersQueryServerClient _client;
+    private readonly GameRecordInfoOptions _gameRecordInfo;
+
+    public UtensilRepository(
+        IGameProvidersQueryServerClient client,
+        IOptions<GameRecordInfoOptions> options)
     {
-        private readonly IGameProvidersQueryServerClient _client;
-        private readonly GameRecordInfoOptions _gameRecordInfo;
-
-        public UtensilRepository(
-            IGameProvidersQueryServerClient client,
-            IOptions<GameRecordInfoOptions> options)
-        {
-            _client = client ?? throw new ArgumentNullException(nameof(client));
-            _gameRecordInfo = options.Value;
-        }
-
-        public ValueTask<Guid?> BrandGetGameProviderConfigurationIdAsync(Guid brandId, Guid gameProviderId)
-            => _client.BrandGetGameProviderConfigurationIdAsync(brandId, gameProviderId);
-
-        public async ValueTask<int?> GetGameIdAsync(Guid gameProviderId, string gameExternalId)
-        {
-            var gameModel = await _client.GameGetAsync(gameProviderId, gameExternalId).ConfigureAwait(false);
-            return gameModel?.GameId;
-        }
-
-        public async ValueTask<Guid> GetGameProviderIdAsync()
-        {
-            var gameProviderId = await _client.GameProviderGetGameProviderIdAsync(_gameRecordInfo.GameProviderCode).ConfigureAwait(false);
-            return gameProviderId!.Value;
-        }
-
-        public ValueTask<PlayerModel?> GetPlayerAsync(string playerCode)
-            => _client.PlayerGetAsync(playerCode);
+        _client = client ?? throw new ArgumentNullException(nameof(client));
+        _gameRecordInfo = options.Value;
     }
+
+    public ValueTask<Guid?> BrandGetGameProviderConfigurationIdAsync(Guid brandId, Guid gameProviderId)
+        => _client.BrandGetGameProviderConfigurationIdAsync(brandId, gameProviderId);
+
+    public async ValueTask<int?> GetGameIdAsync(Guid gameProviderId, string gameExternalId)
+    {
+        var gameModel = await _client.GameGetAsync(gameProviderId, gameExternalId).ConfigureAwait(false);
+        return gameModel?.GameId;
+    }
+
+    public async ValueTask<Guid> GetGameProviderIdAsync()
+        => await _client.GameProviderGetGameProviderIdAsync(_gameRecordInfo.GameProviderCode).ConfigureAwait(false)
+        ?? throw new Exception($"The identifier for this game provider does not exist.({_gameRecordInfo.GameProviderCode})");
+
+    public ValueTask<PlayerModel?> GetPlayerAsync(string playerCode)
+        => _client.PlayerGetAsync(playerCode);
+
+    public async ValueTask<WGSportsConfiguration> GetSettingConfigurationAsync()
+        => await _client.SettingGetConfigurationAsync<WGSportsConfiguration>(_gameRecordInfo.GameProviderConfiguration).ConfigureAwait(false)
+        ?? throw new Exception($"This game product setting does not exist.({_gameRecordInfo.GameProviderConfiguration})");
 }
