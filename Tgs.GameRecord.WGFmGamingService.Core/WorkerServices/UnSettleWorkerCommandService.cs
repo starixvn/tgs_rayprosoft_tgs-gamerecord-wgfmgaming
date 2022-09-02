@@ -38,7 +38,7 @@ internal class UnSettleWorkerCommandService : ICommandService<UnSettleWorkerComm
                         apiUrl: command.ApiUrl,
                         partnerCode: command.PartnerCode,
                         partnerKey: command.PartnerKey,
-                        partnerIV: command.partnerIV,
+                        partnerIV: command.PartnerIV,
                         isSettle: false,
                         startTime: command.StartTime,
                         endTime: command.EndTime,

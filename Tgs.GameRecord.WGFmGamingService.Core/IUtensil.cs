@@ -11,6 +11,4 @@ public interface IUtensil
     ValueTask<Guid> GetGameProviderIdAsync();
 
     ValueTask<PlayerModel?> GetPlayerAsync(string playerCode);
-
-    ValueTask<WGSportsConfiguration> GetSettingConfigurationAsync();
 }

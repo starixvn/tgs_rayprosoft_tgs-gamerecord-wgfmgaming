@@ -33,6 +33,12 @@ internal class ScheduleMessageHandler : IMessageHandler
 
         _logger.LogInformation("Information Received:{LogInfo}", messageModel);
 
-        return _service.ExecuteAsync(new ScheduleDispatchCommand(), cancellationToken);
+        var command = new ScheduleDispatchCommand(
+            ApiUrl: messageModel.ApiUrl,
+            PartnerCode: messageModel.PartnerCode,
+            PartnerKey: messageModel.PartnerKey,
+            PartnerIV: messageModel.PartnerIV);
+
+        return _service.ExecuteAsync(command, cancellationToken);
     }
 }

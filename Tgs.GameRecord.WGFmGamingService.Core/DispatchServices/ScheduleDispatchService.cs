@@ -34,8 +34,8 @@ internal class ScheduleDispatchService : ICommandService<ScheduleDispatchCommand
 
     public async ValueTask ExecuteAsync(ScheduleDispatchCommand command, CancellationToken cancellationToken = default)
     {
-        var configuration = await _utensil.GetSettingConfigurationAsync().ConfigureAwait(false);
-        var key = $"gp:gamerecord:{_gameRecordInfoOptions.GameProviderCode}:{configuration.PartnerCode}".ToLower();
+
+        var key = $"gp:gamerecord:{_gameRecordInfoOptions.GameProviderCode}:{command.PartnerCode}".ToLower();
         if (!await _scheduleDispatch.ExistAsync(key: key).ConfigureAwait(false))
         {
             if (await _scheduleDispatch.LockingAsync(key: key, command: command).ConfigureAwait(false))
@@ -46,18 +46,18 @@ internal class ScheduleDispatchService : ICommandService<ScheduleDispatchCommand
                     var startDate = endDate.AddMinutes(_intervalMinute * -1);
 
                     await _unSettleService.ExecuteAsync(new UnSettleWorkerCommand(
-                        ApiUrl: configuration.ApiUrl,
-                        PartnerCode: configuration.PartnerCode,
-                        PartnerKey: configuration.PartnerKey,
-                        partnerIV: configuration.IV,
+                        ApiUrl: command.ApiUrl,
+                        PartnerCode: command.PartnerCode,
+                        PartnerKey: command.PartnerKey,
+                        PartnerIV: command.PartnerIV,
                         StartTime: startDate,
                         EndTime: endDate), cancellationToken: cancellationToken).ConfigureAwait(false);
 
                     await _settleService.ExecuteAsync(new SettleWorkerCommand(
-                        ApiUrl: configuration.ApiUrl,
-                        PartnerCode: configuration.PartnerCode,
-                        PartnerKey: configuration.PartnerKey,
-                        partnerIV: configuration.IV,
+                        ApiUrl: command.ApiUrl,
+                        PartnerCode: command.PartnerCode,
+                        PartnerKey: command.PartnerKey,
+                        PartnerIV: command.PartnerIV,
                         StartTime: startDate,
                         EndTime: endDate), cancellationToken: cancellationToken).ConfigureAwait(false);
                 }

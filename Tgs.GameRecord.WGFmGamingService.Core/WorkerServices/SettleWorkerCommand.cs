@@ -4,6 +4,6 @@ public record SettleWorkerCommand(
     Uri ApiUrl,
     string PartnerCode,
     string PartnerKey,
-    string partnerIV,
+    string PartnerIV,
     DateTimeOffset StartTime,
     DateTimeOffset EndTime);

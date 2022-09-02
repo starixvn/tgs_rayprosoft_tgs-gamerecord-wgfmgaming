@@ -83,15 +83,4 @@ internal class UtensilCacheRepository : IUtensil
         }
         return playerModel;
     }
-
-    public async ValueTask<WGSportsConfiguration> GetSettingConfigurationAsync()
-    {
-        if (!_memoryCache.TryGetValue(_gameRecordInfo.GameProviderConfiguration, out WGSportsConfiguration gameProviderId))
-        {
-            gameProviderId = await _utensil.GetSettingConfigurationAsync().ConfigureAwait(false);
-
-            _ = _memoryCache.Set(_gameRecordInfo.GameProviderConfiguration, gameProviderId, _absoluteExpirationRelativeToNow);
-        }
-        return gameProviderId;
-    }
 }

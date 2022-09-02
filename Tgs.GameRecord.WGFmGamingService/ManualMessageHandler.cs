@@ -24,7 +24,7 @@ public class ManualMessageHandler : IMessageProcessor
            ApiUrl: request.ApiUrl,
            PartnerCode: request.PartnerCode,
            PartnerKey: request.PartnerKey,
-           partnerIV: request.PartnerIV,
+           PartnerIV: request.PartnerIV,
            StartTime: request.StartTime,
            EndTime: request.EndTime), cancellationToken).ConfigureAwait(false);
 

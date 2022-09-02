@@ -65,33 +65,6 @@ builder.Services.AddGameRecordService(
 
 builder.Services
     .AddMessageQueue()
-    .AddRabbitMessageQueue(config =>
-    {
-        _ = config
-            .ConfigQueueOptions((options, sp) =>
-            {
-                var configuration = sp.GetRequiredService<IConfiguration>();
-
-                configuration.GetSection("RabbitMQ").Bind(options);
-
-                options.OnSetupQueueAndExchange = channel =>
-                {
-                    _ = channel.QueueDeclare(
-                        queue: "gp.gamerecord.wgfm",
-                        durable: true,
-                        exclusive: false,
-                        autoDelete: false,
-                        arguments: null);
-
-                    channel.QueueBind(
-                        "gp.gamerecord.wgfm",
-                        "amq.direct",
-                        $"tgs.gp.gamerecord.wgfm",
-                        new Dictionary<string, object>());
-                };
-            })
-            .AddHandler<ScheduleMessageHandler>("gp.gamerecord.wgfm", false);
-    })
     .AddMongoMessageQueue(config =>
     {
         _ = config
@@ -111,6 +84,7 @@ builder.Services
              var configuration = sp.GetRequiredService<IConfiguration>();
              options.Url = configuration.GetConnectionString("Nats");
          })
+         .AddHandler<ScheduleMessageHandler>("gp.gamerecord.schedule.wgfm", "gp.gamerecord.schedule")
          .AddProcessor<ManualMessageHandler>("gp.gamerecord.manual.wgfm", "gp.gamerecord.manual");
      })
     .ClearAllExchanges()

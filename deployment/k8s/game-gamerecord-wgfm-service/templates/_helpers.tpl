@@ -51,6 +51,7 @@ app: {{ include "game-gamerecord-wgfm-service.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 tgs.kind: game
 tgs.game.kind: gamerecord
+tgs.gameprovider.kind: wgfm
 {{- end }}
 
 {{/*

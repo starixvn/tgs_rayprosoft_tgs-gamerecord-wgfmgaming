@@ -32,8 +32,4 @@ internal class UtensilRepository : IUtensil
 
     public ValueTask<PlayerModel?> GetPlayerAsync(string playerCode)
         => _client.PlayerGetAsync(playerCode);
-
-    public async ValueTask<WGSportsConfiguration> GetSettingConfigurationAsync()
-        => await _client.SettingGetConfigurationAsync<WGSportsConfiguration>(_gameRecordInfo.GameProviderConfiguration).ConfigureAwait(false)
-        ?? throw new Exception($"This game product setting does not exist.({_gameRecordInfo.GameProviderConfiguration})");
 }
