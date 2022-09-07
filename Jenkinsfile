@@ -96,6 +96,7 @@ pipeline {
                         def resources = getResources(env.k8s_config, env.kube_ns, "game-gamerecord-wgfm-service")
                         def dedicated = getTgsSettings(env.k8s_config, env.kube_ns, "dedicated")
                         def node_selector = getTgsSettings(env.k8s_config, env.kube_ns, "node-selector")
+                        def autoscaling = getAutoscaling(env.k8s_config, env.kube_ns, "game-gamerecord-wgfm-service")
                         
                         println resources
                         println dedicated
@@ -109,7 +110,8 @@ pipeline {
                             {
                                 "nodeSelector": $node_selector,
                                 "tolerations": [$dedicated],
-                                "resources": $resources
+                                "resources": $resources,
+                                "autoscaling": $autoscaling
                             }
                         """
                         sh """
@@ -121,7 +123,8 @@ pipeline {
                             {
                                 "nodeSelector": $node_selector,
                                 "tolerations": [$dedicated],
-                                "resources": $resources
+                                "resources": $resources,
+                                "autoscaling": $autoscaling
                             }
                         """
                     }
