@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
-using Tgs.GameInterface.WGFmGamingService.Client;
 using Tgs.MessageQueue;
 using Tgs.ServiceUtility;
 
@@ -9,7 +8,6 @@ namespace Tgs.GameRecord.WGFmGamingService.Core.ApplicationServices;
 
 internal class GamePullRecordCommandService : ICommandService<GamePullRecordCommand>
 {
-    private readonly IGameInterfaceWGFmGamingClient _client;
     private readonly GameRecordInfoOptions _gameRecordInfoOptions;
     private readonly ILogger<GamePullRecordCommandService> _logger;
     private readonly IMessageSender _messageSender;
@@ -19,13 +17,11 @@ internal class GamePullRecordCommandService : ICommandService<GamePullRecordComm
     public GamePullRecordCommandService(
         IOptions<GameRecordInfoOptions> options,
         ILogger<GamePullRecordCommandService> logger,
-        IGameInterfaceWGFmGamingClient client,
         IMessageSender messageSender,
         IUtensil utensil)
     {
         _gameRecordInfoOptions = options.Value;
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _client = client ?? throw new ArgumentNullException(nameof(client));
         _messageSender = messageSender ?? throw new ArgumentNullException(nameof(messageSender));
         _utensil = utensil ?? throw new ArgumentNullException(nameof(utensil));
         _subject = $"tgs.gp.gamerecord.database.round.{_gameRecordInfoOptions.GameProviderCode.ToLower()}";

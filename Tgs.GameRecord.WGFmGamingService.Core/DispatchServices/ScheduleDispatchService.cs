@@ -11,14 +11,12 @@ internal class ScheduleDispatchService : ICommandService<ScheduleDispatchCommand
     private readonly IScheduleDispatch _scheduleDispatch;
     private readonly ICommandService<SettleWorkerCommand> _settleService;
     private readonly ICommandService<UnSettleWorkerCommand> _unSettleService;
-    private readonly IUtensil _utensil;
 
     public ScheduleDispatchService(
         IOptions<GameRecordInfoOptions> options,
         ICommandService<SettleWorkerCommand> settleService,
         ICommandService<UnSettleWorkerCommand> unSettleService,
-        IScheduleDispatch scheduleDispatch,
-        IUtensil utensil
+        IScheduleDispatch scheduleDispatch
         )
     {
         _gameRecordInfoOptions = options.Value;
@@ -26,7 +24,6 @@ internal class ScheduleDispatchService : ICommandService<ScheduleDispatchCommand
         _settleService = settleService ?? throw new ArgumentNullException(nameof(settleService));
         _unSettleService = unSettleService ?? throw new ArgumentNullException(nameof(unSettleService));
         _scheduleDispatch = scheduleDispatch ?? throw new ArgumentNullException(nameof(scheduleDispatch));
-        _utensil = utensil ?? throw new ArgumentNullException(nameof(utensil));
         _intervalMinute = (_gameRecordInfoOptions.IntervalMinute < _gameRecordInfoOptions.MinimumIntervalMinute)
                         ? _gameRecordInfoOptions.MinimumIntervalMinute
                         : _gameRecordInfoOptions.IntervalMinute;
@@ -34,7 +31,6 @@ internal class ScheduleDispatchService : ICommandService<ScheduleDispatchCommand
 
     public async ValueTask ExecuteAsync(ScheduleDispatchCommand command, CancellationToken cancellationToken = default)
     {
-
         var key = $"gp:gamerecord:{_gameRecordInfoOptions.GameProviderCode}:{command.PartnerCode}".ToLower();
         if (!await _scheduleDispatch.ExistAsync(key: key).ConfigureAwait(false))
         {
