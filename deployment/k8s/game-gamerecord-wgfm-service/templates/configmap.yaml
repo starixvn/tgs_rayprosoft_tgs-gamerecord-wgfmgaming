@@ -15,7 +15,7 @@ data:
         "LockMinute": 2
       },
       "GameRecord": {
-        "GameCommandClientBaseUrl": "http://ggame-gamecommand/",
+        "GameCommandClientBaseUrl": "http://game-gamecommand/",
         "GameInterfaceBaseUrl": "http://game-gameinterface-wgfm-service:9090/"
       }
     }
