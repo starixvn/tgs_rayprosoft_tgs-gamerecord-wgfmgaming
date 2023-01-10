@@ -1,4 +1,4 @@
-﻿namespace Tgs.GameRecord.WGFmGamingService;
+﻿namespace Tgs.GameRecord.WGFmGamingService.Core;
 
 public record RedisOptions
 {

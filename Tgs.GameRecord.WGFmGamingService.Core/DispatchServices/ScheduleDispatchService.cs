@@ -24,9 +24,9 @@ internal class ScheduleDispatchService : ICommandService<ScheduleDispatchCommand
         _settleService = settleService ?? throw new ArgumentNullException(nameof(settleService));
         _unSettleService = unSettleService ?? throw new ArgumentNullException(nameof(unSettleService));
         _scheduleDispatch = scheduleDispatch ?? throw new ArgumentNullException(nameof(scheduleDispatch));
-        _intervalMinute = (_gameRecordInfoOptions.IntervalMinute < _gameRecordInfoOptions.MinimumIntervalMinute)
-                        ? _gameRecordInfoOptions.MinimumIntervalMinute
-                        : _gameRecordInfoOptions.IntervalMinute;
+        _intervalMinute = (_gameRecordInfoOptions.IntervalMinutes < _gameRecordInfoOptions.IntervalMinutesMinimum)
+                        ? _gameRecordInfoOptions.IntervalMinutesMinimum
+                        : _gameRecordInfoOptions.IntervalMinutes;
     }
 
     public async ValueTask ExecuteAsync(ScheduleDispatchCommand command, CancellationToken cancellationToken = default)

@@ -6,16 +6,17 @@ metadata:
 data:
   appsettings.json: |
     {
-      "GameRecord": {
-        "GameProvidersQueryServerBaseUrl": "http://game-gameprovider-queryserver",
-        "GameInterfaceWGFmGamingBaseUrl": "http://game-gameinterface-wgfm-service:9090"
-      },
       "GameRecordInfo": {
         "GameProviderCode": "WGFM",
         "GameProviderConfiguration": "WGFMConfiguration",
-        "MinimumIntervalMinute": 1,
-        "IntervalMinute": 3,
-        "LockMinute": 1.5
+        "IntervalMinutes": 3,
+        "IntervalMinutesMax": 1440,
+        "IntervalMinutesMinimum": 1,
+        "LockMinute": 2
+      },
+      "GameRecord": {
+        "GameCommandClientBaseUrl": "http://ggame-gamecommand/",
+        "GameInterfaceBaseUrl": "http://game-gameinterface-wgfm-service:9090/"
       }
     }
   monitor.settings.json: |
