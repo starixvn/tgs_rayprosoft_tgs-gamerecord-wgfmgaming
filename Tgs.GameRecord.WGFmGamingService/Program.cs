@@ -33,14 +33,22 @@ builder.Logging
 
 builder.Services
     .AddRouting(options => options.LowercaseUrls = true)
-    .AddControllers()
+    .AddControllers(options =>
+    {
+        options.Filters.Add(new ProducesAttribute(MediaTypeNames.Application.Json));
+        options.Filters.Add(new ConsumesAttribute(MediaTypeNames.Application.Json));
+    })
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    var xmlFileNames = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.xml");
+    foreach (var xmlFileName in xmlFileNames) c.IncludeXmlComments(xmlFileName);
+});
 
 builder.Services.AddGameRecordCore(
     (options, sp) =>
@@ -78,7 +86,7 @@ builder.Services
     {
         _ = config
         .DefineMessageQueue(
-            "gp.gamerecord.database",
+            mongoSetting.ManagerName,
             sp => new MongoMessageQueueBuilderOptions
             {
                 MessageQueue = MongoMessageQueue.Default,
