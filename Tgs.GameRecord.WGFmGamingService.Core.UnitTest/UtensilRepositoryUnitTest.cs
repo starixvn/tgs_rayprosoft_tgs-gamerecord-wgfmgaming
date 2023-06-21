@@ -126,6 +126,35 @@ public class UtensilRepositoryUnitTest
     }
 
     [TestMethod]
+    public void Get_GameProvider_Code()
+    {
+        var gameRecordInfo = Options.Create(new GameRecordInfoOptions
+        {
+            GameProviderCode = "WGFM",
+            GameProviderConfiguration = "WGFMConfiguration",
+            IntervalMinutes = 3,
+            IntervalMinutesMax = 1440,
+            IntervalMinutesMinimum = 1,
+            LockMinute = 2
+        });
+        var fakeClient = Substitute.For<IGameCommandClient>();
+        var fakeMemoryCache = Substitute.For<IMemoryCache>();
+        var absoluteExpirationRelativeToNow = TimeSpan.FromHours(1);
+
+        var repository = new UtensilRepository(
+            gameRecordInfo,
+            fakeClient,
+            fakeMemoryCache,
+            absoluteExpirationRelativeToNow);
+
+        var actual = repository
+            .GetGameProviderCode();
+
+        Assert.IsNotNull(actual);
+        Assert.AreEqual(gameRecordInfo.Value.GameProviderCode, actual);
+    }
+
+    [TestMethod]
     public async Task Get_GameProvider_Id()
     {
         var gameRecordInfo = Options.Create(new GameRecordInfoOptions

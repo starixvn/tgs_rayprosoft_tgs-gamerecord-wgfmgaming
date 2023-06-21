@@ -2,4 +2,4 @@
 
 namespace Tgs.GameRecord.WGFmGamingService.Core.ApplicationServices;
 
-public record GamePullRecordCommand(IEnumerable<GameHistoryInfo> GameHistories);
+public record PullRecordCommand(IEnumerable<GameHistoryInfo> GameHistories);

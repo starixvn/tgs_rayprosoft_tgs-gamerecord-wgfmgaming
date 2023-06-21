@@ -9,12 +9,12 @@ internal class SettleWorkerCommandService : ICommandService<SettleWorkerCommand>
 {
     private readonly IGameInterfaceWGFmGamingClient _client;
     private readonly ILogger<SettleWorkerCommandService> _logger;
-    private readonly ICommandService<GamePullRecordCommand> _service;
+    private readonly ICommandService<PullRecordCommand> _service;
 
     public SettleWorkerCommandService(
         ILogger<SettleWorkerCommandService> logger,
         IGameInterfaceWGFmGamingClient client,
-        ICommandService<GamePullRecordCommand> service)
+        ICommandService<PullRecordCommand> service)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _client = client ?? throw new ArgumentNullException(nameof(client));
@@ -43,7 +43,7 @@ internal class SettleWorkerCommandService : ICommandService<SettleWorkerCommand>
                 return;
             }
 
-            var query = new GamePullRecordCommand(
+            var query = new PullRecordCommand(
                 gameHistoryInfos);
 
             await _service

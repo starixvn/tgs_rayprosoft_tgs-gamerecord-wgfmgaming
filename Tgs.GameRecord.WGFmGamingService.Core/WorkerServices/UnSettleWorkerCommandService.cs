@@ -9,12 +9,12 @@ internal class UnSettleWorkerCommandService : ICommandService<UnSettleWorkerComm
 {
     private readonly IGameInterfaceWGFmGamingClient _client;
     private readonly ILogger<SettleWorkerCommandService> _logger;
-    private readonly ICommandService<GamePullRecordCommand> _service;
+    private readonly ICommandService<PullRecordCommand> _service;
 
     public UnSettleWorkerCommandService(
         ILogger<SettleWorkerCommandService> logger,
         IGameInterfaceWGFmGamingClient client,
-        ICommandService<GamePullRecordCommand> service)
+        ICommandService<PullRecordCommand> service)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _client = client ?? throw new ArgumentNullException(nameof(client));
@@ -43,7 +43,7 @@ internal class UnSettleWorkerCommandService : ICommandService<UnSettleWorkerComm
                 return;
             }
 
-            var query = new GamePullRecordCommand(gameHistoryInfos);
+            var query = new PullRecordCommand(gameHistoryInfos);
 
             await _service
                 .ExecuteAsync(

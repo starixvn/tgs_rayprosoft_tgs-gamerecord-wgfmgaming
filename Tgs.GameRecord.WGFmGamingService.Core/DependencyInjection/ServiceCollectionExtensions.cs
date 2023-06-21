@@ -11,7 +11,6 @@ public static class ServiceCollectionExtensions
        this IServiceCollection services,
        Action<RedisOptions, IServiceProvider> redisDBconfigure,
        Action<GameRecordInfoOptions, IServiceProvider> gameRecordInfoOptions,
-       Action<MongoSettingOptions, IServiceProvider> mongoSettingOptions,
        Action<GameCommandClientOptions, IServiceProvider> gameCommandClientOptions,
        Action<GameInterfaceWGFmGamingClientOptions, IServiceProvider> gameInterfaceWGFmGamingClientOptions)
         => services
@@ -21,13 +20,11 @@ public static class ServiceCollectionExtensions
             .AddOptions<GameRecordInfoOptions>()
             .Configure(gameRecordInfoOptions)
             .Services
-            .AddOptions<MongoSettingOptions>()
-            .Configure(mongoSettingOptions)
-            .Services
             .RegisterAllServiceUtilityTypes(
                 Assembly.GetExecutingAssembly(),
                 ServiceLifetime.Transient)
             .AddMemoryCache()
+            .AddGameRoundsWorkClient()
             .AddGameInterfaceWGFmGamingServiceClient(gameInterfaceWGFmGamingClientOptions)
             .AddGameCommandClient(gameCommandClientOptions)
             .AddSingleton<RedisConnectionManager>()
