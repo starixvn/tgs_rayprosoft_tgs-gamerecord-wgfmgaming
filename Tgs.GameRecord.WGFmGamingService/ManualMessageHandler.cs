@@ -1,6 +1,6 @@
 ﻿using System.Text;
 using System.Text.Json;
-using Tgs.GameRecord.WGFmGamingService.Core.WorkerServices;
+using Tgs.GameRecord.WGFmGamingService.Core.ApplicationServices;
 using Tgs.MessageQueue;
 using Tgs.ServiceUtility;
 
@@ -8,9 +8,10 @@ namespace Tgs.GameRecord.WGFmGamingService;
 
 public class ManualMessageHandler : IMessageProcessor
 {
-    private readonly ICommandService<SettleWorkerCommand> _service;
+    private readonly ICommandService<PullRecordCommand> _service;
 
-    public ManualMessageHandler(ICommandService<SettleWorkerCommand> service)
+    public ManualMessageHandler(
+        ICommandService<PullRecordCommand> service)
     {
         _service = service ?? throw new ArgumentNullException(nameof(service));
     }
@@ -20,13 +21,18 @@ public class ManualMessageHandler : IMessageProcessor
         var json = Encoding.UTF8.GetString(data.Span);
         var request = JsonSerializer.Deserialize<ManualMessageRequest>(json)!;
 
-        await _service.ExecuteAsync(new SettleWorkerCommand(
-           ApiUrl: request.ApiUrl,
-           PartnerCode: request.PartnerCode,
-           PartnerKey: request.PartnerKey,
-           PartnerIV: request.PartnerIV,
-           StartTime: request.StartTime,
-           EndTime: request.EndTime), cancellationToken).ConfigureAwait(false);
+        var command = new PullRecordCommand(
+            ApiUrl: request.ApiUrl,
+            PartnerCode: request.PartnerCode,
+            PartnerKey: request.PartnerKey,
+            PartnerIV: request.PartnerIV,
+            StartTime: request.StartTime,
+            EndTime: request.EndTime);
+        await _service
+            .ExecuteAsync(
+                command: command,
+                cancellationToken: cancellationToken)
+            .ConfigureAwait(false);
 
         var response = new ManualMessageResponse()
         {

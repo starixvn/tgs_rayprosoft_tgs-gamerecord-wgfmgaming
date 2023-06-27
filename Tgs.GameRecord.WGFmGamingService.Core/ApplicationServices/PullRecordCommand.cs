@@ -1,5 +1,9 @@
-﻿using Tgs.GameInterface.WGFmGamingService.Protos;
+﻿namespace Tgs.GameRecord.WGFmGamingService.Core.ApplicationServices;
 
-namespace Tgs.GameRecord.WGFmGamingService.Core.ApplicationServices;
-
-public record PullRecordCommand(IEnumerable<GameHistoryInfo> GameHistories);
+public record PullRecordCommand(
+    Uri ApiUrl,
+    string PartnerCode,
+    string PartnerKey,
+    string PartnerIV,
+    DateTimeOffset StartTime,
+    DateTimeOffset EndTime);

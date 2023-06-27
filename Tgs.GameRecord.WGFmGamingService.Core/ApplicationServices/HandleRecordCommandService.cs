@@ -11,8 +11,8 @@ internal class HandleRecordCommandService : ICommandService<HandleRecordCommand>
     private readonly IUtensil _utensil;
 
     public HandleRecordCommandService(
-        IGameRoundsWorkClient client,
-        IUtensil utensil)
+        IUtensil utensil,
+        IGameRoundsWorkClient client)
     {
         _client = client ?? throw new ArgumentNullException(nameof(client));
         _utensil = utensil ?? throw new ArgumentNullException(nameof(utensil));
@@ -26,7 +26,7 @@ internal class HandleRecordCommandService : ICommandService<HandleRecordCommand>
                 cancellationToken: cancellationToken)
             .ConfigureAwait(false);
         var gameProviderCode = _utensil.GetGameProviderCode();
-        var playerModel = await _utensil
+        var player = await _utensil
             .GetPlayerAsync(
                 playerCode: command.Record.PlayerCode,
                 cancellationToken: cancellationToken)
@@ -37,17 +37,17 @@ internal class HandleRecordCommandService : ICommandService<HandleRecordCommand>
                 gameExternalId: command.Record.ExternalGameId,
                 cancellationToken: cancellationToken)
             .ConfigureAwait(false);
-        if (playerModel == null || !gameId.HasValue)
+        if (player == null || !gameId.HasValue)
         {
             success = false;
         }
 
         Guid? gameProviderConfigurationId = default;
-        if (playerModel != null)
+        if (player != null)
         {
             gameProviderConfigurationId = await _utensil
                 .GetBrandGameProviderConfigurationIdAsync(
-                    brandId: playerModel.BrandId,
+                    brandId: player.BrandId,
                     gameProviderId: gameProviderId,
                     cancellationToken: cancellationToken)
                 .ConfigureAwait(false);
@@ -77,9 +77,9 @@ internal class HandleRecordCommandService : ICommandService<HandleRecordCommand>
                 gameId: gameId ?? -1,
                 externalGameId: command.Record.ExternalGameId,
                 playerCode: command.Record.PlayerCode,
-                walletId: playerModel!.DefaultWalletId,
-                currencyCode: playerModel!.DefaultWalletCurrencyCode,
-                brandId: playerModel!.BrandId,
+                walletId: player!.DefaultWalletId,
+                currencyCode: player!.DefaultWalletCurrencyCode,
+                brandId: player!.BrandId,
                 gameProviderConfigurationId: gameProviderConfigurationId!.Value,
                 status: status,
                 clientStatus: clientStatus,

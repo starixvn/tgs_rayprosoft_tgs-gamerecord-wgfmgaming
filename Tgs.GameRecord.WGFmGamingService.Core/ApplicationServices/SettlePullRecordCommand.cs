@@ -1,6 +1,6 @@
-﻿namespace Tgs.GameRecord.WGFmGamingService.Core.WorkerServices;
+﻿namespace Tgs.GameRecord.WGFmGamingService.Core.ApplicationServices;
 
-public record SettleWorkerCommand(
+public record SettlePullRecordCommand(
     Uri ApiUrl,
     string PartnerCode,
     string PartnerKey,

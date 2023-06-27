@@ -6,10 +6,9 @@ using Tgs.GameCommand.Common;
 
 namespace Tgs.GameRecord.WGFmGamingService.Core.UnitTest;
 
-[TestClass]
 public class UtensilRepositoryUnitTest
 {
-    [TestMethod]
+    [Fact]
     public async Task Get_Brand_GameProvider_Configuration_Id()
     {
         var gameRecordInfo = Options.Create(new GameRecordInfoOptions
@@ -56,9 +55,9 @@ public class UtensilRepositoryUnitTest
                 gameProviderId)
             .ConfigureAwait(false);
 
-        Assert.IsNotNull(actual);
-        Assert.IsTrue(actual.HasValue);
-        Assert.AreEqual(gameProviderConfigurationId, actual.Value);
+        Assert.NotNull(actual);
+        Assert.True(actual.HasValue);
+        Assert.Equal(gameProviderConfigurationId, actual.Value);
 
         _ = fakeMemoryCache
             .Received(1)
@@ -67,7 +66,7 @@ public class UtensilRepositoryUnitTest
                 gameProviderConfigurationId);
     }
 
-    [TestMethod]
+    [Fact]
     public async Task Get_Game_Id()
     {
         var gameRecordInfo = Options.Create(new GameRecordInfoOptions
@@ -114,9 +113,9 @@ public class UtensilRepositoryUnitTest
                 gameExternalId)
             .ConfigureAwait(false);
 
-        Assert.IsNotNull(actual);
-        Assert.IsTrue(actual.HasValue);
-        Assert.AreEqual(gameId, actual.Value);
+        Assert.NotNull(actual);
+        Assert.True(actual.HasValue);
+        Assert.Equal(gameId, actual.Value);
 
         _ = fakeMemoryCache
             .Received(1)
@@ -125,7 +124,7 @@ public class UtensilRepositoryUnitTest
                 gameId);
     }
 
-    [TestMethod]
+    [Fact]
     public void Get_GameProvider_Code()
     {
         var gameRecordInfo = Options.Create(new GameRecordInfoOptions
@@ -150,11 +149,11 @@ public class UtensilRepositoryUnitTest
         var actual = repository
             .GetGameProviderCode();
 
-        Assert.IsNotNull(actual);
-        Assert.AreEqual(gameRecordInfo.Value.GameProviderCode, actual);
+        Assert.NotNull(actual);
+        Assert.Equal(gameRecordInfo.Value.GameProviderCode, actual);
     }
 
-    [TestMethod]
+    [Fact]
     public async Task Get_GameProvider_Id()
     {
         var gameRecordInfo = Options.Create(new GameRecordInfoOptions
@@ -195,8 +194,7 @@ public class UtensilRepositoryUnitTest
             .GetGameProviderIdAsync()
             .ConfigureAwait(false);
 
-        Assert.IsNotNull(actual);
-        Assert.AreEqual(gameProviderId, actual);
+        Assert.Equal(gameProviderId, actual);
 
         _ = fakeMemoryCache
             .Received(1)
@@ -205,7 +203,7 @@ public class UtensilRepositoryUnitTest
                 gameProviderId);
     }
 
-    [TestMethod]
+    [Fact]
     public void Get_GameProvider_Id_Exception()
     {
         var gameRecordInfo = Options.Create(new GameRecordInfoOptions
@@ -241,12 +239,12 @@ public class UtensilRepositoryUnitTest
             fakeMemoryCache,
             absoluteExpirationRelativeToNow);
 
-        _ = Assert.ThrowsExceptionAsync<Exception>(() => repository
+        _ = Assert.ThrowsAsync<Exception>(() => repository
               .GetGameProviderIdAsync()
               .AsTask());
     }
 
-    [TestMethod]
+    [Fact]
     public async Task Get_Player()
     {
         var gameRecordInfo = Options.Create(new GameRecordInfoOptions
@@ -300,8 +298,8 @@ public class UtensilRepositoryUnitTest
                 playerCode: playerCode)
             .ConfigureAwait(false);
 
-        Assert.IsNotNull(actual);
-        Assert.AreEqual(playerCode, player.PlayerCode);
+        Assert.NotNull(actual);
+        Assert.Equal(playerCode, player.PlayerCode);
 
         _ = fakeMemoryCache
             .Received(1)

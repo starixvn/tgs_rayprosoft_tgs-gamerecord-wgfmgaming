@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
-using Tgs.GameRecord.WGFmGamingService.Core.WorkerServices;
+using Tgs.GameRecord.WGFmGamingService.Core.ApplicationServices;
 using Tgs.ServiceUtility;
 
 namespace Tgs.GameRecord.WGFmGamingService.Core.DispatchServices;
@@ -9,21 +9,17 @@ internal class ScheduleDispatchService : ICommandService<ScheduleDispatchCommand
     private readonly GameRecordInfoOptions _gameRecordInfoOptions;
     private readonly double _intervalMinute;
     private readonly IScheduleDispatch _scheduleDispatch;
-    private readonly ICommandService<SettleWorkerCommand> _settleService;
-    private readonly ICommandService<UnSettleWorkerCommand> _unSettleService;
+    private readonly ICommandService<PullRecordCommand> _service;
 
     public ScheduleDispatchService(
         IOptions<GameRecordInfoOptions> options,
-        ICommandService<SettleWorkerCommand> settleService,
-        ICommandService<UnSettleWorkerCommand> unSettleService,
-        IScheduleDispatch scheduleDispatch
+        IScheduleDispatch scheduleDispatch,
+        ICommandService<PullRecordCommand> service
         )
     {
         _gameRecordInfoOptions = options.Value;
-        ;
-        _settleService = settleService ?? throw new ArgumentNullException(nameof(settleService));
-        _unSettleService = unSettleService ?? throw new ArgumentNullException(nameof(unSettleService));
         _scheduleDispatch = scheduleDispatch ?? throw new ArgumentNullException(nameof(scheduleDispatch));
+        _service = service ?? throw new ArgumentNullException(nameof(service));
         _intervalMinute = (_gameRecordInfoOptions.IntervalMinutes < _gameRecordInfoOptions.IntervalMinutesMinimum)
                         ? _gameRecordInfoOptions.IntervalMinutesMinimum
                         : _gameRecordInfoOptions.IntervalMinutes;
@@ -38,24 +34,21 @@ internal class ScheduleDispatchService : ICommandService<ScheduleDispatchCommand
             {
                 try
                 {
-                    var endDate = DateTimeOffset.ParseExact(DateTimeOffset.UtcNow.ToString(@"yyyy-MM-dd\THH:mm:00K"), @"yyyy-MM-dd\THH:mm:ssK", null, styles: System.Globalization.DateTimeStyles.RoundtripKind);
-                    var startDate = endDate.AddMinutes(_intervalMinute * -1);
+                    var endTime = DateTimeOffset.ParseExact(DateTimeOffset.UtcNow.ToString(@"yyyy-MM-dd\THH:mm:00K"), @"yyyy-MM-dd\THH:mm:ssK", null, styles: System.Globalization.DateTimeStyles.RoundtripKind);
+                    var startTime = endTime.AddMinutes(_intervalMinute * -1);
 
-                    await _unSettleService.ExecuteAsync(new UnSettleWorkerCommand(
-                        ApiUrl: command.ApiUrl,
-                        PartnerCode: command.PartnerCode,
-                        PartnerKey: command.PartnerKey,
-                        PartnerIV: command.PartnerIV,
-                        StartTime: startDate,
-                        EndTime: endDate), cancellationToken: cancellationToken).ConfigureAwait(false);
-
-                    await _settleService.ExecuteAsync(new SettleWorkerCommand(
-                        ApiUrl: command.ApiUrl,
-                        PartnerCode: command.PartnerCode,
-                        PartnerKey: command.PartnerKey,
-                        PartnerIV: command.PartnerIV,
-                        StartTime: startDate,
-                        EndTime: endDate), cancellationToken: cancellationToken).ConfigureAwait(false);
+                    var pullRecordCommand = new PullRecordCommand(
+                            ApiUrl: command.ApiUrl,
+                            PartnerCode: command.PartnerCode,
+                            PartnerKey: command.PartnerKey,
+                            PartnerIV: command.PartnerIV,
+                            StartTime: startTime,
+                            EndTime: endTime);
+                    await _service
+                        .ExecuteAsync(
+                        command: pullRecordCommand,
+                        cancellationToken: cancellationToken)
+                        .ConfigureAwait(false);
                 }
                 finally
                 {

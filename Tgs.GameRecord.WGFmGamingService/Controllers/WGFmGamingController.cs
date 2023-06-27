@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Tgs.GameRecord.WGFmGamingService.Core.WorkerServices;
+using Tgs.GameRecord.WGFmGamingService.Core.ApplicationServices;
 using Tgs.GameRecord.WGFmGamingService.ViewModels;
 using Tgs.ServiceUtility;
 
@@ -11,11 +11,11 @@ public class WGFmGamingController : ControllerBase
 {
     [HttpPost]
     public ValueTask GameRecordAsync(
-        [FromServices] ICommandService<SettleWorkerCommand> service,
+        [FromServices] ICommandService<SettlePullRecordCommand> service,
         GameRecordQueryViewModel source)
         => service
             .ExecuteAsync(
-            new SettleWorkerCommand(
+            new SettlePullRecordCommand(
                     source.ApiUrl,
                     source.PartnerCode,
                     source.PartnerKey,
