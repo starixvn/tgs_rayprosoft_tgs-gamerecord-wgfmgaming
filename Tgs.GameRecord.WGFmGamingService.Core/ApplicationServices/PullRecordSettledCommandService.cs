@@ -54,13 +54,13 @@ internal class PullRecordSettledCommandService : ICommandService<PullRecordSettl
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "已結算遊戲紀錄發生例外.({gameHistory})", gameHistory);
+                    _logger.LogError(ex, "LogOn:{logOn} Message: An exception occurred in this game record.({gameRecord})", DateTime.Now.ToString("o"), gameHistory);
                 }
             }
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"發生例外");
+            _logger.LogError(ex, "LogOn:{logOn} Message:Exception occurred.({command})", DateTime.Now.ToString("o"), command);
         }
     }
 }
