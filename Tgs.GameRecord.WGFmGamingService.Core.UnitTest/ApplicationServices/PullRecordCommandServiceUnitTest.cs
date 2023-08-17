@@ -11,8 +11,8 @@ public class PullRecordCommandServiceUnitTest
     public async void Normal_Process()
     {
         var fakeLogger = NullLogger<PullRecordCommandService>.Instance;
-        var fakeUnSettlePullRecordService = Substitute.For<ICommandService<UnSettlePullRecordCommand>>();
-        var fakeSettleService = Substitute.For<ICommandService<SettlePullRecordCommand>>();
+        var fakeUnSettlePullRecordService = Substitute.For<ICommandService<PullRecordUnsettledCommand>>();
+        var fakeSettleService = Substitute.For<ICommandService<PullRecordSettledCommand>>();
 
         var command = new PullRecordCommand(
             new Uri("http://localhost/"),
@@ -35,14 +35,14 @@ public class PullRecordCommandServiceUnitTest
         await fakeUnSettlePullRecordService
             .Received(1)
             .ExecuteAsync(
-            command: Arg.Any<UnSettlePullRecordCommand>(),
+            command: Arg.Any<PullRecordUnsettledCommand>(),
             cancellationToken: Arg.Any<CancellationToken>())
             .ConfigureAwait(false);
 
         await fakeSettleService
              .Received(1)
              .ExecuteAsync(
-             command: Arg.Any<SettlePullRecordCommand>(),
+             command: Arg.Any<PullRecordSettledCommand>(),
              cancellationToken: Arg.Any<CancellationToken>())
              .ConfigureAwait(false);
     }

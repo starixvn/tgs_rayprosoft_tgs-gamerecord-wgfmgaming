@@ -1,6 +1,6 @@
 ﻿namespace Tgs.GameRecord.WGFmGamingService.Core.ApplicationServices;
 
-public record UnSettlePullRecordCommand(
+public record PullRecordSettledCommand(
     Uri ApiUrl,
     string PartnerCode,
     string PartnerKey,

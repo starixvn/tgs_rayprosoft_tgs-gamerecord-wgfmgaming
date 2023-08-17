@@ -6,16 +6,16 @@ using Tgs.ServiceUtility;
 
 namespace Tgs.GameRecord.WGFmGamingService.Core.UnitTest.ApplicationServices;
 
-public class UnSettlePullRecordCommandServiceUnitTest
+public class PullRecordSettledCommandServiceUnitTest
 {
     [Fact]
     public async void Normal_Process()
     {
-        var fakeLogger = NullLogger<SettlePullRecordCommandService>.Instance;
+        var fakeLogger = NullLogger<PullRecordSettledCommandService>.Instance;
         var fakeGameInterfaceWGFmGamingClient = Substitute.For<IGameInterfaceWGFmGamingClient>();
         var fakeService = Substitute.For<ICommandService<HandleRecordCommand>>();
 
-        var command = new UnSettlePullRecordCommand(
+        var command = new PullRecordSettledCommand(
             new Uri("http://localhost/"),
             PartnerCode: "partnerCode",
             PartnerKey: "partnerKey",
@@ -23,7 +23,7 @@ public class UnSettlePullRecordCommandServiceUnitTest
             StartTime: DateTime.UtcNow.AddMinutes(-10),
             EndTime: DateTime.UtcNow);
 
-        var service = new UnSettlePullRecordCommandService(
+        var service = new PullRecordSettledCommandService(
             fakeLogger,
             fakeGameInterfaceWGFmGamingClient,
             fakeService);
@@ -40,7 +40,7 @@ public class UnSettlePullRecordCommandServiceUnitTest
             partnerCode: Arg.Is(command.PartnerCode),
             partnerKey: Arg.Is(command.PartnerKey),
             partnerIV: Arg.Is(command.PartnerIV),
-            isSettle: Arg.Is(false),
+            isSettle: Arg.Is(true),
             startTime: Arg.Is(command.StartTime),
             endTime: Arg.Is(command.EndTime),
             cancellationToken: Arg.Any<CancellationToken>())

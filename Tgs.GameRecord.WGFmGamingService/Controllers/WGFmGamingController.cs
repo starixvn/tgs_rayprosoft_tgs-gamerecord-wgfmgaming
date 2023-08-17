@@ -11,11 +11,11 @@ public class WGFmGamingController : ControllerBase
 {
     [HttpPost]
     public ValueTask GameRecordAsync(
-        [FromServices] ICommandService<SettlePullRecordCommand> service,
+        [FromServices] ICommandService<PullRecordSettledCommand> service,
         GameRecordQueryViewModel source)
         => service
-            .ExecuteAsync(
-            new SettlePullRecordCommand(
+        .ExecuteAsync(
+            new PullRecordSettledCommand(
                     source.ApiUrl,
                     source.PartnerCode,
                     source.PartnerKey,

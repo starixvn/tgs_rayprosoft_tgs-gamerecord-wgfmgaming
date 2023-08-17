@@ -5,14 +5,14 @@ using Tgs.ServiceUtility;
 
 namespace Tgs.GameRecord.WGFmGamingService.Core.ApplicationServices;
 
-internal class SettlePullRecordCommandService : ICommandService<SettlePullRecordCommand>
+internal class PullRecordSettledCommandService : ICommandService<PullRecordSettledCommand>
 {
     private readonly IGameInterfaceWGFmGamingClient _client;
-    private readonly ILogger<SettlePullRecordCommandService> _logger;
+    private readonly ILogger<PullRecordSettledCommandService> _logger;
     private readonly ICommandService<HandleRecordCommand> _service;
 
-    public SettlePullRecordCommandService(
-        ILogger<SettlePullRecordCommandService> logger,
+    public PullRecordSettledCommandService(
+        ILogger<PullRecordSettledCommandService> logger,
         IGameInterfaceWGFmGamingClient client,
         ICommandService<HandleRecordCommand> service)
     {
@@ -21,7 +21,7 @@ internal class SettlePullRecordCommandService : ICommandService<SettlePullRecord
         _service = service ?? throw new ArgumentNullException(nameof(service));
     }
 
-    public async ValueTask ExecuteAsync(SettlePullRecordCommand command, CancellationToken cancellationToken = default)
+    public async ValueTask ExecuteAsync(PullRecordSettledCommand command, CancellationToken cancellationToken = default)
     {
         try
         {

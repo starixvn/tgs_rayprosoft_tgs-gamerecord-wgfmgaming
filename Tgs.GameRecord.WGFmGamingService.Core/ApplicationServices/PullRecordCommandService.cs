@@ -6,13 +6,13 @@ namespace Tgs.GameRecord.WGFmGamingService.Core.ApplicationServices;
 internal class PullRecordCommandService : ICommandService<PullRecordCommand>
 {
     private readonly ILogger<PullRecordCommandService> _logger;
-    private readonly ICommandService<SettlePullRecordCommand> _settleService;
-    private readonly ICommandService<UnSettlePullRecordCommand> _unSettleService;
+    private readonly ICommandService<PullRecordSettledCommand> _settleService;
+    private readonly ICommandService<PullRecordUnsettledCommand> _unSettleService;
 
     public PullRecordCommandService(
         ILogger<PullRecordCommandService> logger,
-        ICommandService<UnSettlePullRecordCommand> unSettleService,
-        ICommandService<SettlePullRecordCommand> settleService)
+        ICommandService<PullRecordUnsettledCommand> unSettleService,
+        ICommandService<PullRecordSettledCommand> settleService)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _unSettleService = unSettleService ?? throw new ArgumentNullException(nameof(unSettleService));
@@ -23,7 +23,7 @@ internal class PullRecordCommandService : ICommandService<PullRecordCommand>
     {
         try
         {
-            var pullRecordCommand = new UnSettlePullRecordCommand(
+            var pullRecordCommand = new PullRecordUnsettledCommand(
                     ApiUrl: command.ApiUrl,
                     PartnerCode: command.PartnerCode,
                     PartnerKey: command.PartnerKey,
@@ -43,7 +43,7 @@ internal class PullRecordCommandService : ICommandService<PullRecordCommand>
 
         try
         {
-            var pullRecordCommand = new SettlePullRecordCommand(
+            var pullRecordCommand = new PullRecordSettledCommand(
                     ApiUrl: command.ApiUrl,
                     PartnerCode: command.PartnerCode,
                     PartnerKey: command.PartnerKey,
