@@ -5,27 +5,16 @@ using Tgs.ServiceUtility;
 
 namespace Tgs.GameRecord.WGFmGaming.Core.ApplicationServices;
 
-internal class PullRecordSettledCommandService : ICommandService<PullRecordSettledCommand>
+internal class PullRecordSettledCommandService(
+    ILogger<PullRecordSettledCommandService> logger,
+    IGameInterfaceWGFmGamingClient client,
+    ICommandService<HandleRecordCommand> service) : ICommandService<PullRecordSettledCommand>
 {
-    private readonly IGameInterfaceWGFmGamingClient _client;
-    private readonly ILogger<PullRecordSettledCommandService> _logger;
-    private readonly ICommandService<HandleRecordCommand> _service;
-
-    public PullRecordSettledCommandService(
-        ILogger<PullRecordSettledCommandService> logger,
-        IGameInterfaceWGFmGamingClient client,
-        ICommandService<HandleRecordCommand> service)
-    {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _client = client ?? throw new ArgumentNullException(nameof(client));
-        _service = service ?? throw new ArgumentNullException(nameof(service));
-    }
-
     public async ValueTask ExecuteAsync(PullRecordSettledCommand command, CancellationToken cancellationToken = default)
     {
         try
         {
-            var gameHistoryInfos = await _client
+            var gameHistoryInfos = await client
                     .GameHistoryAsync(
                         apiUrl: command.ApiUrl,
                         partnerCode: command.PartnerCode,
@@ -46,7 +35,7 @@ internal class PullRecordSettledCommandService : ICommandService<PullRecordSettl
             {
                 try
                 {
-                    await _service
+                    await service
                     .ExecuteAsync(
                          command: new HandleRecordCommand(gameHistory),
                          cancellationToken: cancellationToken)
@@ -54,13 +43,13 @@ internal class PullRecordSettledCommandService : ICommandService<PullRecordSettl
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "LogOn:{logOn} Message: An exception occurred in this game record.({gameRecord})", DateTime.Now.ToString("o"), gameHistory);
+                    logger.LogError(ex, "LogOn:{logOn} Message: An exception occurred in this game record.({gameRecord})", DateTime.Now.ToString("o"), gameHistory);
                 }
             }
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "LogOn:{logOn} Message:Exception occurred.({command})", DateTime.Now.ToString("o"), command);
+            logger.LogError(ex, "LogOn:{logOn} Message:Exception occurred.({command})", DateTime.Now.ToString("o"), command);
         }
     }
 }

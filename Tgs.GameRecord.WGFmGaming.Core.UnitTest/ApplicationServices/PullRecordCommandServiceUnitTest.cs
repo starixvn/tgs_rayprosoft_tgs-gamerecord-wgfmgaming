@@ -10,7 +10,6 @@ public class PullRecordCommandServiceUnitTest
     [Fact]
     public async void Normal_Process()
     {
-        var fakeLogger = NullLogger<PullRecordCommandService>.Instance;
         var fakeUnSettlePullRecordService = Substitute.For<ICommandService<PullRecordUnsettledCommand>>();
         var fakeSettleService = Substitute.For<ICommandService<PullRecordSettledCommand>>();
 
@@ -23,7 +22,6 @@ public class PullRecordCommandServiceUnitTest
             EndTime: DateTime.UtcNow);
 
         var service = new PullRecordCommandService(
-            fakeLogger,
             fakeUnSettlePullRecordService,
             fakeSettleService);
 

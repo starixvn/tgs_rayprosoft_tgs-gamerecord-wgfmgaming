@@ -2,18 +2,20 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: configmap-{{ include "game-gamerecord-wgfm.name" . }}
-  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "game-gamerecord-saba.labels" . | nindent 4 }}
 data:
   appsettings.json: |
     {
       "Logging": {
          "LogLevel": {
-          "Default": "Warning"
+          "Default": "Warning",
+          "Tgs.GameRecord.WGFmGaming.Messages": "Information"
           }
       },
       "GameRecord": {
         "GameCommandClientBaseUrl": "http://game-gamecommand/",
-        "GameInterfaceBaseUrl": "http://game-gameinterface-wgfm-service:9090/"
+        "GameInterfaceBaseUrl": "dns:///game-gameinterface-wgfm-service:9090/"
       }
     }
   otel-collector-config.yaml: |
