@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: configmap-{{ include "game-gamerecord-wgfm.name" . }}
   labels:
-    {{- include "game-gamerecord-saba.labels" . | nindent 4 }}
+    {{- include "game-gamerecord-wgfm.labels" . | nindent 4 }}
 data:
   appsettings.json: |
     {
