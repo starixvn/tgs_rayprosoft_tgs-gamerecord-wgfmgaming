@@ -19,7 +19,6 @@ public static class ServiceCollectionExtensions
             ServiceLifetime.Transient)
         .AddGameCommandClient(gameCommandClientOptions)
         .AddGameInterfaceWGFmGamingServiceClient(gameInterfaceWGFmGamingClientOptions)
-        .AddGameRecordHandleClient()
         .AddTransient<IHangfireUtensil, HangfireUtensil>()
         .AddTransient<IHangfireLock>(sp => ActivatorUtilities.CreateInstance<HangfireLock>(sp, redisDatabaseResolver(sp)));
 }

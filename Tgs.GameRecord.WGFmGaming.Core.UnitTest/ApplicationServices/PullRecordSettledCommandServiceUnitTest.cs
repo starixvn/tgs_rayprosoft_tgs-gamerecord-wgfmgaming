@@ -9,7 +9,7 @@ namespace Tgs.GameRecord.WGFmGaming.Core.UnitTest.ApplicationServices;
 public class PullRecordSettledCommandServiceUnitTest
 {
     [Fact]
-    public async void Normal_Process()
+    public async Task Normal_Process()
     {
         var fakeLogger = NullLogger<PullRecordSettledCommandService>.Instance;
         var fakeGameInterfaceWGFmGamingClient = Substitute.For<IGameInterfaceWGFmGamingClient>();

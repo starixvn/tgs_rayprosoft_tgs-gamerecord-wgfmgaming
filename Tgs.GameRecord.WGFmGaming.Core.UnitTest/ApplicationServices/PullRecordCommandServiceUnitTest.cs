@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging.Abstractions;
-using NSubstitute;
+﻿using NSubstitute;
 using Tgs.GameRecord.WGFmGaming.Core.ApplicationServices;
 using Tgs.ServiceUtility;
 
@@ -8,7 +7,7 @@ namespace Tgs.GameRecord.WGFmGaming.Core.UnitTest.ApplicationServices;
 public class PullRecordCommandServiceUnitTest
 {
     [Fact]
-    public async void Normal_Process()
+    public async Task Normal_Process()
     {
         var fakeUnSettlePullRecordService = Substitute.For<ICommandService<PullRecordUnsettledCommand>>();
         var fakeSettleService = Substitute.For<ICommandService<PullRecordSettledCommand>>();
