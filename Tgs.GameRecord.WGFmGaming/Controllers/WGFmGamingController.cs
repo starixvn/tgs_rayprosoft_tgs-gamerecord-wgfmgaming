@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Tgs.GameRecord.WGFmGaming.Core.ApplicationServices;
-using Tgs.GameRecord.WGFmGaming.ViewModels;
-using Tgs.ServiceUtility;
+﻿using System.Text;
+using System.Text.Json;
+using Microsoft.AspNetCore.Mvc;
+using Tgs.GameRecord.WGFmGaming.Common;
+using Valhalla.MessageQueue;
 
 namespace Tgs.GameRecord.WGFmGaming.Controllers;
 
@@ -9,17 +10,33 @@ namespace Tgs.GameRecord.WGFmGaming.Controllers;
 [Route("WGFM")]
 public class WGFmGamingController : ControllerBase
 {
-    [HttpPost]
-    public ValueTask GameRecordAsync(
-        [FromServices] ICommandService<PullRecordSettledCommand> service,
-        GameRecordQueryViewModel source)
-        => service
-        .ExecuteAsync(
-            new PullRecordSettledCommand(
-                    source.ApiUrl,
-                    source.PartnerCode,
-                    source.PartnerKey,
-                    source.PartnerIV,
-                    source.StartTime,
-                    source.EndTime));
+	/// <summary>
+	/// Games the record manual asynchronous.
+	/// </summary>
+	/// <param name="messageSender">The message sender.</param>
+	/// <param name="source">The source.</param>
+	/// <returns></returns>
+	[HttpPost("manual")]
+	public ValueTask GameRecordManualAsync(
+		[FromServices] IMessageSender messageSender,
+		WGFmGamingGameRecordMessage source)
+		=> messageSender.PublishAsync(
+			subject: WGFmGamingNatsConst.ManualPublish,
+			data: Encoding.UTF8.GetBytes(JsonSerializer.Serialize(source)),
+			cancellationToken: HttpContext.RequestAborted);
+
+	/// <summary>
+	/// Games the record schedule asynchronous.
+	/// </summary>
+	/// <param name="messageSender">The message sender.</param>
+	/// <param name="source">The source.</param>
+	/// <returns></returns>
+	[HttpPost("schedule")]
+	public ValueTask GameRecordScheduleAsync(
+		[FromServices] IMessageSender messageSender,
+		WGFmGamingGameRecordMessage source)
+		=> messageSender.PublishAsync(
+			subject: WGFmGamingNatsConst.SchedulePublish,
+			data: Encoding.UTF8.GetBytes(JsonSerializer.Serialize(source)),
+			cancellationToken: HttpContext.RequestAborted);
 }
