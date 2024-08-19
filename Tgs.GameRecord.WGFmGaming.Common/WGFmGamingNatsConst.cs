@@ -2,6 +2,6 @@
 
 public record WGFmGamingNatsConst
 {
-    public const string SchedulePublish = "gp.gamerecord.wgfm.schedule";
-    public const string ManualPublish = "gp.gamerecord.wgfm.manual";
+	public const string SchedulePublish = "gp.gamerecord.wgfm.schedule";
+	public const string ManualPublish = "gp.gamerecord.wgfm.manual";
 }
