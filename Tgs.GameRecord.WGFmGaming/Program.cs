@@ -89,6 +89,7 @@ builder.Services
 	})
 	.Services
 	.AddSingleton<RedisConnectionManager>()
+	.AddSingleton(TimeProvider.System)
 	.AddGameCommandClient((options, sp) =>
 	{
 		var configuration = sp.GetRequiredService<IConfiguration>();
@@ -119,7 +120,8 @@ builder.Services
 		.AddHandler<ScheduleMessageHandler>(WGFmGamingNatsConst.SchedulePublish, WGFmGamingNatsConst.SchedulePublish)
 		.AddHandler<ScheduleMessageHandler>(WGFmGamingNatsConst.ManualPublish, WGFmGamingNatsConst.ManualPublish))
 	.ClearAllExchanges()
-	.AddNatsGlobPatternExchange("*");
+	.AddNatsGlobPatternExchange(WGFmGamingNatsConst.SchedulePublish)
+	.AddNatsGlobPatternExchange(WGFmGamingNatsConst.ManualPublish);
 
 builder.Services
 	.AddOpenTelemetry()

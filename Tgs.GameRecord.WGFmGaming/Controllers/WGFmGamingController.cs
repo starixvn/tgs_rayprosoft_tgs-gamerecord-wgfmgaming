@@ -22,7 +22,7 @@ public class WGFmGamingController : ControllerBase
 		WGFmGamingGameRecordMessage source)
 		=> messageSender.PublishAsync(
 			subject: WGFmGamingNatsConst.ManualPublish,
-			data: Encoding.UTF8.GetBytes(JsonSerializer.Serialize(source)),
+			data: JsonSerializer.SerializeToUtf8Bytes(source),
 			cancellationToken: HttpContext.RequestAborted);
 
 	/// <summary>
@@ -37,6 +37,6 @@ public class WGFmGamingController : ControllerBase
 		WGFmGamingGameRecordMessage source)
 		=> messageSender.PublishAsync(
 			subject: WGFmGamingNatsConst.SchedulePublish,
-			data: Encoding.UTF8.GetBytes(JsonSerializer.Serialize(source)),
+			data: JsonSerializer.SerializeToUtf8Bytes(source),
 			cancellationToken: HttpContext.RequestAborted);
 }
